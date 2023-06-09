@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout_common}">
+
+<th:block layout:fragment="script">
+  <!-- DataTables  & Plugins -->
+  <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+  <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+  <script src="/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+  <script src="/plugins/jszip/jszip.min.js"></script>
+  <script src="/plugins/pdfmake/pdfmake.min.js"></script>
+  <script src="/plugins/pdfmake/vfs_fonts.js"></script>
+
+  <script src="/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+  <script src="/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+  <script src="/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+  <!-- InputMask -->
+  <script src="/plugins/moment/moment.min.js"></script>
+  <script src="/plugins/inputmask/jquery.inputmask.min.js"></script>
+  <!-- Page specific script -->
+  <script th:inline="javascript">
+    $(function () {
+      $("#example1").DataTable({
+        "responsive": true, "lengthChange": false, "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+      }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    });
+
+    //Datemask dd/mm/yyyy
+    $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
+    //Datemask2 mm/dd/yyyy
+    $('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
+    //Money Euro
+    $('[data-mask]').inputmask()
+
+    //Date picker
+    $('#reservationdate').datetimepicker({
+      format: 'L'
+    });
+    $('#reservationdate1').datetimepicker({
+      format: 'L'
+    });
+  </script>
+</th:block>
+
+<th:block layout:fragment="css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+</th:block>
+
+<th:block layout:fragment="content">
+  <div class="content-wrapper" style="padding-top: 10px">
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">학생 정보 조회</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-info">수정</button>
+                  <button type="button" class="btn btn-info"
+                          data-toggle="modal" data-target="#modal-default">추가</button>
+                  <button type="button" class="btn btn-info">삭제</button>
+                </div>
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>성명</th>
+                    <th>생년월일</th>
+                    <th>연락처</th>
+                    <th>구분</th>
+                    <th>거주지</th>
+                    <th>소속</th>
+                    <th>전공</th>
+                    <th>이메일</th>
+                    <th>비고</th>
+                  </tr>
+                  </thead>
+
+                  <tfoot>
+                  <tr>
+                    <th>성명</th>
+                    <th>생년월일</th>
+                    <th>연락처</th>
+                    <th>구분</th>
+                    <th>거주지</th>
+                    <th>소속</th>
+                    <th>전공</th>
+                    <th>이메일</th>
+                    <th>비고</th>
+                  </tr>
+                  </tfoot>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+
+      <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">학생 정보 추가</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+              <form id="addStudent" method="post">
+
+                <div class="form-group">
+                  <label for="exampleInputBorderWidth2_1">성명</label>
+                  <input type="text" class="form-control form-control-border border-width-2" id="exampleInputBorderWidth2_1" placeholder="이름을 입력하세요">
+                </div>
+
+                <div class="form-group">
+                  <label>생년월일</label>
+                  <div class="input-group date" id="reservationdate1" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"/>
+                    <div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                  </div>
+                  <input type="email" class="form-control" placeholder="Email">
+                </div>
+
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                  </div>
+                  <input type="text" class="form-control" data-inputmask='"mask": "(999) 9999-9999"' data-mask>
+                </div>
+
+                <div class="form-group" style="padding-top: 13px">
+                  <label for="exampleInputBorderWidth2_2">거주지</label>
+                  <input type="text" class="form-control form-control-border border-width-2" id="exampleInputBorderWidth2_2" placeholder="지역을 입력하세요">
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleInputBorderWidth2_3">소속</label>
+                  <input type="text" class="form-control form-control-border border-width-2" id="exampleInputBorderWidth2_3" placeholder="대학을 입력하세요">
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleInputBorderWidth2_4">전공</label>
+                  <input type="text" class="form-control form-control-border border-width-2" id="exampleInputBorderWidth2_4" placeholder="학과를 입력하세요">
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleSelectBorderWidth2">최종 학력</label>
+                  <select class="custom-select form-control-border border-width-2" id="exampleSelectBorderWidth2">
+                    <option>-선택하세요-</option>
+                    <option>중졸</option>
+                    <option>고졸</option>
+                    <option>대졸</option>
+                    <option>대학 재학중</option>
+                    <option>알 수 없음</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>수강시작일</label>
+                  <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>
+                    <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+              <button type="submit" class="btn btn-primary" form="addStudent">학생 추가</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+
+</th:block>
+</html>
