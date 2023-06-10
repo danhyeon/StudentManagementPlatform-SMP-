@@ -4,6 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout_common}">
 
+<!--현재 페이지에서 쓰이는 스크립트-->
 <th:block layout:fragment="script">
   <!-- DataTables  & Plugins -->
   <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
@@ -15,44 +16,164 @@
   <script src="/plugins/jszip/jszip.min.js"></script>
   <script src="/plugins/pdfmake/pdfmake.min.js"></script>
   <script src="/plugins/pdfmake/vfs_fonts.js"></script>
-
   <script src="/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
   <script src="/plugins/datatables-buttons/js/buttons.print.min.js"></script>
   <script src="/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
   <!-- InputMask -->
   <script src="/plugins/moment/moment.min.js"></script>
   <script src="/plugins/inputmask/jquery.inputmask.min.js"></script>
-  <!-- Page specific script -->
+  <!-- jquery-validation -->
+  <script src="/plugins/jquery-validation/jquery.validate.min.js"></script>
+  <script src="/plugins/jquery-validation/additional-methods.min.js"></script>
+  <!-- SweetAlert2 -->
+  <script src="/plugins/sweetalert2/sweetalert2.min.js"></script>
+  <!-- Toastr -->
+  <script src="/plugins/toastr/toastr.min.js"></script>
+
+<!--  컴포넌트의 동작에 필요한 인라인 스크립트-->
   <script th:inline="javascript">
+    // 학생 정보 테이블 저장 및 출력 스크립트
     $(function () {
       $("#example1").DataTable({
         "responsive": true, "lengthChange": false, "autoWidth": false,
-        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        "buttons": ["copy", "excel", "pdf", "print", "colvis"]
       }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     });
 
+    // 학생 추가 폼에서 기능하는 컴포넌트들의 스크립트
     //Datemask dd/mm/yyyy
     $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
     //Datemask2 mm/dd/yyyy
     $('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
     //Money Euro
     $('[data-mask]').inputmask()
-
-    //Date picker
+    //Date picker - 생년월일
     $('#reservationdate').datetimepicker({
       format: 'L'
     });
+    //Date picker - 수강시작일
     $('#reservationdate1').datetimepicker({
       format: 'L'
+    });
+
+    // 학생 추가 validation + Ajax 통신
+    $(function () {
+      $.validator.setDefaults({
+        //validation이 통과하면 ajax통신 시작
+        submitHandler: function() {
+          var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+          var studentDto = {
+            name:$('#exampleInputBorderWidth2_1').val(),
+            birth:$('#birthDate').val(),
+            email:$('#emailData').val(),
+            phone:$('#phoneData').val(),
+            classAB:$('#exampleSelectBorderWidth2_1').val(),
+            residence:$('#exampleInputBorderWidth2_2').val(),
+            belong:$('#exampleInputBorderWidth2_3').val(),
+            major:$('#exampleInputBorderWidth2_4').val(),
+            graduate:$('#exampleSelectBorderWidth2').val(),
+            start:$('#startDate').val(),
+            note:""
+          };
+          $.ajax({
+            url: "/student/info",
+            type: "POST",
+            async: true,
+            contentType: "application/json;charset=UTF-8",
+            data: JSON.stringify(studentDto),
+            dataType : "json",
+            cache   : false,
+            success  : function(){
+              //통신이 성공하면 모달 닫기
+              $('#modal-default').modal('hide');
+              //완료 이벤트 문구 출력
+              Toast.fire({
+                icon: 'success',
+                title: '학생이 정상적으로 추가되었습니다'
+              })
+              //비동기 table refresh 추가 필요
+              //location.reload();
+            },
+            error : function(jqXHR){
+              if(jqXHR.status == '401'){
+                alert('로그인 후 이용해주세요');
+                //location.href='/members/login';
+              } else{
+                alert(jqXHR.responseText);
+              }
+            }
+          });
+        }
+      });
+      //validation
+      $('#addStudent').validate({
+        rules: {
+          email: {
+            required: true,
+            email: true,
+          },
+          name: {
+            required: true
+          },
+          birth: {
+            required: true
+          },
+          phone: {
+            required: true
+          },
+          start: {
+            required: true
+          }
+        },
+        messages: {
+          email: {
+            required: "이메일 주소를 입력하세요",
+            email: "올바른 이메일 주소를 입력하세요"
+          },
+          name: {
+            required: "성명을 입력하세요"
+          },
+          birth: {
+            required: "생년월일을 입력하세요"
+          },
+          phone: {
+            required: "연락처를 입력하세요"
+          },
+          start: {
+            required: "수강시작일을 입력하세요"
+          }
+        },
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+          error.addClass('invalid-feedback');
+          element.closest('.form-group').append(error);
+        },
+        highlight: function (element, errorClass, validClass) {
+          $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+          $(element).removeClass('is-invalid');
+        }
+      });
     });
   </script>
 </th:block>
 
+<!--현재 페이지에서 쓰이는 스타일시트-->
 <th:block layout:fragment="css">
   <!-- DataTables -->
   <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
 </th:block>
 
 <th:block layout:fragment="content">
@@ -67,13 +188,14 @@
                 <h3 class="card-title">학생 정보 조회</h3>
               </div>
               <!-- /.card-header -->
-              <div class="card-body">
-                <div class="btn-group">
+              <div class="card-body" id="list">
+                <div class="btn-group float-left">
                   <button type="button" class="btn btn-info">수정</button>
                   <button type="button" class="btn btn-info"
                           data-toggle="modal" data-target="#modal-default">추가</button>
                   <button type="button" class="btn btn-info">삭제</button>
                 </div>
+                <!--    학생 정보 조회 테이블-->
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
@@ -88,7 +210,19 @@
                     <th>비고</th>
                   </tr>
                   </thead>
-
+                  <tbody>
+                  <tr th:each="student : ${studentDtoList}" >
+                    <td><span th:text="${student.name}"></span></td>
+                    <td><span th:text="${student.birth}"></span></td>
+                    <td><span th:text="${student.phone}"></span></td>
+                    <td><span th:text="${student.classAB}"></span></td>
+                    <td><span th:text="${student.residence}"></span></td>
+                    <td><span th:text="${student.belong}"></span></td>
+                    <td><span th:text="${student.major}"></span></td>
+                    <td><span th:text="${student.email}"></span></td>
+                    <td><span th:text="${student.note}"></span></td>
+                  </tr>
+                  </tbody>
                   <tfoot>
                   <tr>
                     <th>성명</th>
@@ -114,6 +248,7 @@
       </div>
       <!-- /.container-fluid -->
 
+<!--      학생 추가 폼 모달-->
       <div class="modal fade" id="modal-default">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -125,75 +260,78 @@
             </div>
             <div class="modal-body">
 
-              <form id="addStudent" method="post">
-
+<!--              학생 정보 입력 폼-->
+              <form id="addStudent" method="post" onsubmit="return false;">
                 <div class="form-group">
                   <label for="exampleInputBorderWidth2_1">성명</label>
-                  <input type="text" class="form-control form-control-border border-width-2" id="exampleInputBorderWidth2_1" placeholder="이름을 입력하세요">
+                  <input type="text" name="name"  class="form-control form-control-border border-width-2" id="exampleInputBorderWidth2_1" placeholder="이름을 입력하세요">
                 </div>
-
                 <div class="form-group">
                   <label>생년월일</label>
                   <div class="input-group date" id="reservationdate1" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"/>
+                    <input type="text" name="birth"  class="form-control datetimepicker-input" id="birthDate" data-target="#reservationdate1"/>
                     <div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
                       <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                   </div>
                 </div>
-
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                   </div>
-                  <input type="email" class="form-control" placeholder="Email">
+                  <input type="email" name="email" class="form-control" id="emailData" placeholder="Email">
                 </div>
-
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-phone"></i></span>
                   </div>
-                  <input type="text" class="form-control" data-inputmask='"mask": "(999) 9999-9999"' data-mask>
+                  <input type="text" name="phone" class="form-control" id="phoneData" data-inputmask='"mask": "(999) 9999-9999"' data-mask>
                 </div>
-
                 <div class="form-group" style="padding-top: 13px">
                   <label for="exampleInputBorderWidth2_2">거주지</label>
-                  <input type="text" class="form-control form-control-border border-width-2" id="exampleInputBorderWidth2_2" placeholder="지역을 입력하세요">
+                  <input type="text"  class="form-control form-control-border border-width-2" id="exampleInputBorderWidth2_2" placeholder="지역을 입력하세요">
                 </div>
-
                 <div class="form-group">
                   <label for="exampleInputBorderWidth2_3">소속</label>
                   <input type="text" class="form-control form-control-border border-width-2" id="exampleInputBorderWidth2_3" placeholder="대학을 입력하세요">
                 </div>
-
                 <div class="form-group">
                   <label for="exampleInputBorderWidth2_4">전공</label>
                   <input type="text" class="form-control form-control-border border-width-2" id="exampleInputBorderWidth2_4" placeholder="학과를 입력하세요">
                 </div>
-
                 <div class="form-group">
                   <label for="exampleSelectBorderWidth2">최종 학력</label>
-                  <select class="custom-select form-control-border border-width-2" id="exampleSelectBorderWidth2">
+                  <select class="custom-select form-control-border border-width-2" id="exampleSelectBorderWidth2" name="graduate">
                     <option>-선택하세요-</option>
                     <option>중졸</option>
                     <option>고졸</option>
+                    <option>대학재학중</option>
                     <option>대졸</option>
-                    <option>대학 재학중</option>
-                    <option>알 수 없음</option>
+                    <option>알수없음</option>
                   </select>
                 </div>
-
+                <div class="form-group">
+                  <label for="exampleSelectBorderWidth2_1">구분</label>
+                  <select class="custom-select form-control-border border-width-2" id="exampleSelectBorderWidth2_1" name="classAB">
+                    <option>-선택하세요-</option>
+                    <option>A반</option>
+                    <option>B반</option>
+                    <option>미정</option>
+                  </select>
+                </div>
                 <div class="form-group">
                   <label>수강시작일</label>
                   <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>
+                    <input type="text" name="start" class="form-control datetimepicker-input" id="startDate" data-target="#reservationdate"/>
                     <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
                       <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                   </div>
                 </div>
-
               </form>
+<!--              학생정보 입력 폼 끝-->
+
+<!--              모달 버튼-->
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>

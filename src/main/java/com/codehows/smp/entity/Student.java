@@ -1,9 +1,7 @@
 package com.codehows.smp.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import com.codehows.smp.dto.StudentDto;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -30,19 +28,21 @@ public class Student {
     @Column(nullable = false)
     private String phone;
 
+    private String classAB;
+
     private String residence;
 
     private String belong;
 
-    private String Major;
+    private String major;
 
     private String graduate;
 
     @Column(nullable = false)
-    private String Email;
+    private String email;
 
     @Column(nullable = false)
-    private LocalDateTime start;
+    private String start;
 
     @Column(nullable = false)
     private Boolean status;
@@ -50,4 +50,37 @@ public class Student {
     @Column(length = 400)
     private String note;
 
+    public static Student createStudent(StudentDto studentDto) {
+        return Student.builder()
+                .name(studentDto.getName())
+                .birth(studentDto.getBirth())
+                .phone(studentDto.getPhone())
+                .residence(studentDto.getResidence())
+                .belong(studentDto.getBelong())
+                .major(studentDto.getMajor())
+                .graduate(studentDto.getGraduate())
+                .email(studentDto.getEmail())
+                .start(studentDto.getStart())
+                .status(studentDto.getStatus())
+                .note(studentDto.getNote())
+                .build();
+    }
+
+    @Builder
+    public Student(String name, String birth, String phone,
+                   String residence, String belong, String major,
+                   String graduate, String email, String start,
+                   Boolean status, String note) {
+        this.name = name;
+        this.birth = birth;
+        this.phone = phone;
+        this.residence = residence;
+        this.belong = belong;
+        this.major = major;
+        this.graduate = graduate;
+        this.email = email;
+        this.start = start;
+        this.status = status;
+        this.note = note;
+    }
 }
