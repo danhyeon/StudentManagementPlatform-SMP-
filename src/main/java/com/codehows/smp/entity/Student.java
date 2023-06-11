@@ -4,6 +4,7 @@ import com.codehows.smp.dto.StudentDto;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -42,7 +43,7 @@ public class Student {
     private String email;
 
     @Column(nullable = false)
-    private String start;
+    private LocalDate start;
 
     @Column(nullable = false)
     private Boolean status;
@@ -55,6 +56,7 @@ public class Student {
                 .name(studentDto.getName())
                 .birth(studentDto.getBirth())
                 .phone(studentDto.getPhone())
+                .classAB(studentDto.getClassAB())
                 .residence(studentDto.getResidence())
                 .belong(studentDto.getBelong())
                 .major(studentDto.getMajor())
@@ -68,12 +70,13 @@ public class Student {
 
     @Builder
     public Student(String name, String birth, String phone,
-                   String residence, String belong, String major,
-                   String graduate, String email, String start,
-                   Boolean status, String note) {
+                   String classAB, String residence, String belong,
+                   String major, String graduate, String email,
+                   LocalDate start, Boolean status, String note) {
         this.name = name;
         this.birth = birth;
         this.phone = phone;
+        this.classAB = classAB;
         this.residence = residence;
         this.belong = belong;
         this.major = major;
@@ -82,5 +85,20 @@ public class Student {
         this.start = start;
         this.status = status;
         this.note = note;
+    }
+
+    public void updateStudent(StudentDto studentDto) {
+        this.name = studentDto.getName();
+        this.birth = studentDto.getBirth();
+        this.phone = studentDto.getPhone();
+        this.classAB = studentDto.getClassAB();
+        this.residence = studentDto.getResidence();
+        this.belong = studentDto.getBelong();
+        this.major = studentDto.getMajor();
+        this.graduate = studentDto.getGraduate();
+        this.email = studentDto.getEmail();
+        this.start = studentDto.getStart();
+        this.status = studentDto.getStatus();
+        this.note = studentDto.getNote();
     }
 }

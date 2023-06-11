@@ -4,6 +4,7 @@ import com.codehows.smp.entity.Student;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -32,7 +33,7 @@ public class StudentDto {
 
     private String email;
 
-    private String start;
+    private LocalDate start;
 
     private Boolean status;
 
