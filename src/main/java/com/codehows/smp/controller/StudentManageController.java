@@ -38,6 +38,12 @@ public class StudentManageController {
         return new ResponseEntity<StudentDto>(studentDto, HttpStatus.OK);
     }
 
+    @PostMapping(value = "/info/refresh")
+    public String refreshBody(Model model) {
+        model.addAttribute("studentDtoList", studentService.getStudentList());
+        return "pages/studentManage/studentTableBody";
+    }
+
     @ResponseBody
     @PostMapping(value = "/info")
     public ResponseEntity addStudent(@RequestBody StudentDto studentDto) {
@@ -54,18 +60,17 @@ public class StudentManageController {
         if(studentDto.getId()==null) {
             try {
                 studentService.addStudent(studentDto);
-                map.put("result", "ok");
             } catch (Exception e) {
                 return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
             }
         } else {
             try {
                 studentService.updateStudent(studentDto);
-                map.put("result", "ok");
             } catch (Exception e) {
                 return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
             }
         }
+        map.put("result", "ok");
         return new ResponseEntity<Object>(map, HttpStatus.OK);
     }
 

@@ -43,9 +43,7 @@
         "buttons": ["copy", "excel", "pdf", "print", "colvis"]
       }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     });
-
     $('[data-mask]').inputmask()
-
     $("#startDate").inputmask({
       mask: '9999-99-99',
       placeholder: ' ',
@@ -57,12 +55,12 @@
       $.validator.setDefaults({
         //validation이 통과하면 ajax통신 시작
         submitHandler: function() {
-        //   var Toast = Swal.mixin({
-        //     toast: true,
-        //     position: 'top-end',
-        //     showConfirmButton: false,
-        //     timer: 3000
-        //   });
+          var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
           var studentDto = {
             id:$('#studentId').val(),
             name:$('#exampleInputBorderWidth2_1').val(),
@@ -89,26 +87,28 @@
             success  : function(result, status){
               //통신이 성공하면 모달 폼 닫기
               $('div.modal').modal('hide');
-              //완료 이벤트 문구 출력
-              // Toast.fire({
-              //   icon: 'success',
-              //   title: '학생이 정상적으로 추가되었습니다'
-              // })
-              // $('#example1').prepend(
-              //         "\n<tr>\n" +
-              //         "<td><span>"+ studentDto.name +"</span></td>\n" +
-              //         "<td><span>"+ studentDto.birth +"</span></td>\n" +
-              //         "<td><span>"+ studentDto.phone +"</span></td>\n" +
-              //         "<td><span>"+ studentDto.classAB +"</span></td>\n" +
-              //         "<td><span>"+ studentDto.residence +"</span></td>\n" +
-              //         "<td><span>"+ studentDto.belong +"</span></td>\n" +
-              //         "<td><span>"+ studentDto.major +"</span></td>\n" +
-              //         "<td><span>"+ studentDto.email +"</span></td>\n" +
-              //         "<td><span>"+ studentDto.note +"</span></td>\n" +
-              //         "</tr>"
-              // )
-              //비동기 table refresh 추가 필요
-              location.reload();
+              $.ajax({
+                url: "/student/info/refresh",
+                type: "POST",
+                async: true,
+                // contentType: "application/json;charset=UTF-8",
+                // data: JSON.stringify(studentDto),
+                dataType : "html",
+                cache   : false,
+                success  : function(data){
+                  $('#refreshBody').replaceWith(data);
+                },
+                error : function(jqXHR){
+                  if(jqXHR.status == '401'){
+                    alert('로그인 후 이용해주세요');
+                    //location.href='/members/login';
+                  } else{
+                    alert(jqXHR.responseText);
+                  }
+                }
+              });
+              $('#refreshBody').replaceWith(data);
+              // location.reload();
             },
             error : function(jqXHR){
               if(jqXHR.status == '401'){
@@ -310,7 +310,7 @@
                     <th>비고</th>
                   </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="refreshBody">
                   <tr th:each="student : ${studentDtoList}" >
                     <td class="text-center">
                       <button type="button" class="float-left updateBtn" style="border: none; display: none; background-color: transparent;">
@@ -383,11 +383,17 @@
                   </div>
                   <input type="email" name="email" class="form-control" id="emailData" placeholder="Email">
                 </div>
-                <div class="input-group">
+                <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-phone"></i></span>
                   </div>
                   <input type="text" name="phone" class="form-control" id="phoneData" placeholder="Phone" data-inputmask='"mask": "999-9999-9999"' data-mask>
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                  </div>
+                  <input type="text" name="start" id="startDate" class="form-control" placeholder="수강시작일을 입력하세요">
                 </div>
                 <div class="form-group" style="padding-top: 13px">
                   <label for="exampleInputBorderWidth2_2">거주지</label>
@@ -421,12 +427,6 @@
                     <option>B반</option>
                     <option>미정</option>
                   </select>
-                </div>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
-                  </div>
-                  <input type="text" name="start" id="startDate" class="form-control" placeholder="yyyy-mm-dd">
                 </div>
               </form>
 <!--              학생정보 입력 폼 끝-->
