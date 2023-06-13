@@ -32,11 +32,6 @@
 
 <!--  컴포넌트의 동작에 필요한 인라인 스크립트-->
   <script th:inline="javascript">
-    // window.addEventListener('DOMContentLoaded', function(){
-    //   $(".updateBtn").hide()
-    //   $(".deleteBtn").hide()
-    // })
-    // 학생 정보 테이블 저장 및 출력 스크립트
     $(function () {
       $("#example1").DataTable({
         "responsive": true, "lengthChange": false, "autoWidth": false,
@@ -49,18 +44,22 @@
       placeholder: ' ',
       allowMinus: false,
     })
-
+    //수정 삭제 버튼 토글
+    $(function() {
+      $("#updateToggle").on("click", function() {
+        $(".updateBtn").toggle("show");
+      })
+    })
+    $(function() {
+      $("#deleteToggle").on("click", function() {
+        $(".deleteBtn").toggle("show");
+      })
+    })
     // 학생 추가 validation + Ajax 통신
     $(function () {
       $.validator.setDefaults({
         //validation이 통과하면 ajax통신 시작
         submitHandler: function() {
-          var Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000
-          });
           var studentDto = {
             id:$('#studentId').val(),
             name:$('#exampleInputBorderWidth2_1').val(),
@@ -84,31 +83,15 @@
             data: JSON.stringify(studentDto),
             dataType : "json",
             cache   : false,
-            success  : function(result, status){
+            success  : function(){
               //통신이 성공하면 모달 폼 닫기
               $('div.modal').modal('hide');
-              $.ajax({
-                url: "/student/info/refresh",
-                type: "POST",
-                async: true,
-                // contentType: "application/json;charset=UTF-8",
-                // data: JSON.stringify(studentDto),
-                dataType : "html",
-                cache   : false,
-                success  : function(data){
-                  $('#refreshBody').replaceWith(data);
-                },
-                error : function(jqXHR){
-                  if(jqXHR.status == '401'){
-                    alert('로그인 후 이용해주세요');
-                    //location.href='/members/login';
-                  } else{
-                    alert(jqXHR.responseText);
-                  }
-                }
-              });
-              $('#refreshBody').replaceWith(data);
-              // location.reload();
+              if($('.modal-title').text()=='학생 정보 수정') {
+                toastInfo('success', '수정이 완료되었습니다.');
+              }else if($('.modal-title').text()=='학생 정보 추가') {
+                toastInfo('success', '추가가 완료되었습니다.');
+              }
+              refreshTable();
             },
             error : function(jqXHR){
               if(jqXHR.status == '401'){
@@ -176,21 +159,77 @@
         }
       });
     });
+    function toastInfo(icon, title) {
+      Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+      }).fire({
+        icon: icon,
+        title: title,
+      })
+    }
+    function refreshTable() {
+      $.ajax({
+        url: "/student/info/refresh",
+        type: "POST",
+        async: true,
+        dataType : "html",
+        cache   : false,
+        success  : function(data){
+          refreshBody(data);
+        },
+        error : function(jqXHR){
+          if(jqXHR.status == '401'){
+            alert('로그인 후 이용해주세요');
+            //location.href='/members/login';
+          } else{
+            alert(jqXHR.responseText);
+          }
+        }
+      });
+    }
+    function refreshBody(data) {
+      $('#example1_wrapper').remove();
+      $('#refreshBody').append(data);
+      $("#example1").DataTable({
+        "responsive": true, "lengthChange": false, "autoWidth": false,
+        "buttons": ["copy", "excel", "pdf", "print", "colvis"]
+      }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    }
     //학생 추가
     function insertModal(){
       $('.modal-title').text('학생 정보 추가');
-      $('#studentId').val('');
-      $('#exampleInputBorderWidth2_1').val('');
-      $('#exampleInputBorderWidth2_0').val('');
-      $('#phoneData').val('');
-      $('#emailData').val('');
-      $('#exampleInputBorderWidth2_2').val('');
-      $('#exampleInputBorderWidth2_3').val('');
-      $('#exampleInputBorderWidth2_4').val('');
-      $('#exampleSelectBorderWidth2').val('');
-      $('#exampleSelectBorderWidth2_1').val('');
-      $('#startDate').val('');
+      initModal(null);
       $('div.modal').modal();
+    }
+    function initModal(data) {
+      if(data==null) {
+        $('#studentId').val('');
+        $('#exampleInputBorderWidth2_1').val('');
+        $('#exampleInputBorderWidth2_0').val('');
+        $('#phoneData').val('');
+        $('#emailData').val('');
+        $('#exampleInputBorderWidth2_2').val('');
+        $('#exampleInputBorderWidth2_3').val('');
+        $('#exampleInputBorderWidth2_4').val('');
+        $('#exampleSelectBorderWidth2').val('');
+        $('#exampleSelectBorderWidth2_1').val('');
+        $('#startDate').val('');
+      }else {
+        $('#studentId').val(data.id);
+        $('#exampleInputBorderWidth2_1').val(data.name);
+        $('#exampleInputBorderWidth2_0').val(data.birth);
+        $('#phoneData').val(data.phone);
+        $('#emailData').val(data.email);
+        $('#exampleInputBorderWidth2_2').val(data.residence);
+        $('#exampleInputBorderWidth2_3').val(data.belong);
+        $('#exampleInputBorderWidth2_4').val(data.major);
+        $('#exampleSelectBorderWidth2').val(data.graduate);
+        $('#exampleSelectBorderWidth2_1').val(data.classAB);
+        $('#startDate').val(data.start);
+      }
     }
     //학생 수정
     function updateModal(obj){
@@ -201,32 +240,19 @@
         type: "GET",
         dataType : "json",
         cache   : false,
-        success  : function(data, status){
+        success  : function(data){
           $('.modal-title').text('학생 정보 수정');
-          $('#studentId').val(data.id);
-          $('#exampleInputBorderWidth2_1').val(data.name);
-          $('#exampleInputBorderWidth2_0').val(data.birth);
-          $('#phoneData').val(data.phone);
-          $('#emailData').val(data.email);
-          $('#exampleInputBorderWidth2_2').val(data.residence);
-          $('#exampleInputBorderWidth2_3').val(data.belong);
-          $('#exampleInputBorderWidth2_4').val(data.major);
-          $('#exampleSelectBorderWidth2').val(data.graduate);
-          $('#exampleSelectBorderWidth2_1').val(data.classAB);
-          $('#startDate').val(data.start);
+          initModal(data);
           $('div.modal').modal();
         },
       });
-
     }
     //학생 삭제
     function deleteStudent(obj){
       var id = obj.dataset.id;
       // var token = $("meta[name='_csrf']").attr("content");
       // var header = $("meta[name='_csrf_header']").attr("content");
-
       var url = "/student/info/" + id;
-
       $.ajax({
         url      : url,
         type     : "DELETE",
@@ -236,31 +262,21 @@
         // },
         dataType : "json",
         cache   : false,
-        success  : function(result, status){
-          location.reload();
+        success  : function(){
+          refreshTable();
+          toastInfo('success', '삭제가 완료되었습니다')
         },
-        // error : function(jqXHR, status, error){
-        //
-        //   if(jqXHR.status == '401'){
-        //     alert('로그인 후 이용해주세요');
-        //     location.href='/members/login';
-        //   } else{
-        //     alert(jqXHR.responseText);
-        //   }
-        //
-        // }
+        error : function(jqXHR){
+          if(jqXHR.status == '401'){
+            alert('로그인 후 이용해주세요');
+            // location.href='/members/login';
+          } else{
+            alert(jqXHR.responseText);
+          }
+        }
       });
     }
-    $(function() {
-      $("#updateToggle").on("click", function() {
-        $(".updateBtn").toggle("show");
-      })
-    })
-    $(function() {
-      $("#deleteToggle").on("click", function() {
-        $(".deleteBtn").toggle("show");
-      })
-    })
+
   </script>
 </th:block>
 
@@ -288,7 +304,7 @@
                 <h3 class="card-title">학생 정보 조회</h3>
               </div>
               <!-- /.card-header -->
-              <div class="card-body" id="list">
+              <div class="card-body" id="refreshBody">
                 <div class="btn-group float-left">
                   <button type="button" id="updateToggle" class="btn btn-info">수정</button>
                   <button type="button" class="btn btn-info" onclick="insertModal()">추가</button>
@@ -310,7 +326,7 @@
                     <th>비고</th>
                   </tr>
                   </thead>
-                  <tbody id="refreshBody">
+                  <tbody>
                   <tr th:each="student : ${studentDtoList}" >
                     <td class="text-center">
                       <button type="button" class="float-left updateBtn" style="border: none; display: none; background-color: transparent;">

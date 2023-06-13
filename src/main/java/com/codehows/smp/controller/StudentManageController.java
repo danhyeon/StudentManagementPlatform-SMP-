@@ -32,19 +32,6 @@ public class StudentManageController {
     }
 
     @ResponseBody
-    @GetMapping(value = "/info/{studentId}")
-    public ResponseEntity getStudent(@PathVariable("studentId") Long studentId) {
-        StudentDto studentDto = studentService.getStudent(studentId);
-        return new ResponseEntity<StudentDto>(studentDto, HttpStatus.OK);
-    }
-
-    @PostMapping(value = "/info/refresh")
-    public String refreshBody(Model model) {
-        model.addAttribute("studentDtoList", studentService.getStudentList());
-        return "pages/studentManage/studentTableBody";
-    }
-
-    @ResponseBody
     @PostMapping(value = "/info")
     public ResponseEntity addStudent(@RequestBody StudentDto studentDto) {
 //        if(bindingResult.hasErrors()) {
@@ -72,6 +59,19 @@ public class StudentManageController {
         }
         map.put("result", "ok");
         return new ResponseEntity<Object>(map, HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/info/{studentId}")
+    public ResponseEntity getStudent(@PathVariable("studentId") Long studentId) {
+        StudentDto studentDto = studentService.getStudent(studentId);
+        return new ResponseEntity<StudentDto>(studentDto, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/info/refresh")
+    public String refreshBody(Model model) {
+        model.addAttribute("studentDtoList", studentService.getStudentList());
+        return "pages/studentManage/studentTableBody";
     }
 
     @ResponseBody
