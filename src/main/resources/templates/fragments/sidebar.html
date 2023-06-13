@@ -52,19 +52,13 @@
             <li class="nav-item">
               <a th:href="@{/student/info}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
-                <p>학생 정보 관리</p>
+                <p>학생 정보 조회/관리</p>
               </a>
             </li>
             <li class="nav-item">
               <a th:href="@{/}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
-                <p>학생 정보 조회</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a th:href="@{/}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>출결 관리</p>
+                <p>출결 정보 관리</p>
               </a>
             </li>
           </ul>
@@ -116,6 +110,14 @@
             <i class="nav-icon far fa-calendar-alt"></i>
             <p>
               일정 관리
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a th:href="@{/class/info}" class="nav-link">
+            <i class="nav-icon far fa-calendar-alt"></i>
+            <p>
+              강의실 자리배치도
             </p>
           </a>
         </li>

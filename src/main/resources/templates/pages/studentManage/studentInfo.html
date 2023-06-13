@@ -293,7 +293,23 @@
 </th:block>
 
 <th:block layout:fragment="content">
-  <div class="content-wrapper" style="padding-top: 10px">
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>학생 정보 조회/관리</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">홈</a></li>
+              <li class="breadcrumb-item active">학생 정보 조회/관리</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
@@ -301,7 +317,7 @@
           <div class="col-12">
             <div class="card" id="my-card">
               <div class="card-header">
-                <h3 class="card-title">학생 정보 조회</h3>
+                <h3 class="card-title">학생 정보</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body" id="refreshBody">
