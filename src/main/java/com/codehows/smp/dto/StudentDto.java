@@ -39,6 +39,8 @@ public class StudentDto {
 
     private String note;
 
+    private Integer seat;
+
     private static ModelMapper modelMapper = new ModelMapper();
 
     public static StudentDto of(Student student) {

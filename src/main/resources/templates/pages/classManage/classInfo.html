@@ -19,13 +19,10 @@
           alwaysShowClose: true
         });
       });
-
-      $('.filter-container').filterizr({gutterPixels: 3});
-      $('.btn[data-filter]').on('click', function() {
-        $('.btn[data-filter]').removeClass('active');
-        $(this).addClass('active');
-      });
     })
+    function infoModal(obj) {
+      $('#galleryModal').modal();
+    }
   </script>
 </th:block>
 
@@ -69,27 +66,27 @@
                     <div class="col-sm-6">
                       <div class="row justify-content-center">
                         <div class="filtr-item col-sm-3" data-category="1" data-sort="white sample">
-                          <a href="https://via.placeholder.com/1200/FFFFFF.png?text=1" data-toggle="lightbox" data-title="sample 1 - white">
-                            <img src="https://via.placeholder.com/300/FFFFFF?text=1" class="img-fluid mb-2" alt="white sample"/>
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=1" class="img-fluid mb-2" alt="black sample"/>
                           </a>
                         </div>
                         <div class="filtr-item col-sm-3" data-category="2, 4" data-sort="black sample">
-                          <a href="https://via.placeholder.com/1200/000000.png?text=2" data-toggle="lightbox" data-title="sample 2 - black">
-                            <img src="https://via.placeholder.com/300/000000?text=2" class="img-fluid mb-2" alt="black sample"/>
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=2" class="img-fluid mb-2" alt="black sample"/>
                           </a>
                         </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3" data-category="3, 4" data-sort="red sample">
-                          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=3" data-toggle="lightbox" data-title="sample 3 - red">
-                            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=3" class="img-fluid mb-2" alt="red sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=3" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="3, 4" data-sort="red sample">
-                          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=4" data-toggle="lightbox" data-title="sample 4 - red">
-                            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=4" class="img-fluid mb-2" alt="red sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=4" class="img-fluid mb-2"/>
                           </a>
                         </div>
                       </div>
@@ -98,28 +95,28 @@
                   <div class="row justify-content-center" id="arow2">
                     <div class="col-sm-6">
                       <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3" data-category="1" data-sort="white sample">
-                          <a href="https://via.placeholder.com/1200/FFFFFF.png?text=1" data-toggle="lightbox" data-title="sample 1 - white">
-                            <img src="https://via.placeholder.com/300/FFFFFF?text=1" class="img-fluid mb-2" alt="white sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=5" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="2, 4" data-sort="black sample">
-                          <a href="https://via.placeholder.com/1200/000000.png?text=2" data-toggle="lightbox" data-title="sample 2 - black">
-                            <img src="https://via.placeholder.com/300/000000?text=2" class="img-fluid mb-2" alt="black sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=6" class="img-fluid mb-2"/>
                           </a>
                         </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3" data-category="3, 4" data-sort="red sample">
-                          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=3" data-toggle="lightbox" data-title="sample 3 - red">
-                            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=3" class="img-fluid mb-2" alt="red sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=7" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="3, 4" data-sort="red sample">
-                          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=4" data-toggle="lightbox" data-title="sample 4 - red">
-                            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=4" class="img-fluid mb-2" alt="red sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=8" class="img-fluid mb-2"/>
                           </a>
                         </div>
                       </div>
@@ -128,28 +125,28 @@
                   <div class="row justify-content-center mb-5" id="arow3">
                     <div class="col-sm-6">
                       <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3" data-category="1" data-sort="white sample">
-                          <a href="https://via.placeholder.com/1200/FFFFFF.png?text=1" data-toggle="lightbox" data-title="sample 1 - white">
-                            <img src="https://via.placeholder.com/300/FFFFFF?text=1" class="img-fluid mb-2" alt="white sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=9" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="2, 4" data-sort="black sample">
-                          <a href="https://via.placeholder.com/1200/000000.png?text=2" data-toggle="lightbox" data-title="sample 2 - black">
-                            <img src="https://via.placeholder.com/300/000000?text=2" class="img-fluid mb-2" alt="black sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=10" class="img-fluid mb-2"/>
                           </a>
                         </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3" data-category="3, 4" data-sort="red sample">
-                          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=3" data-toggle="lightbox" data-title="sample 3 - red">
-                            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=3" class="img-fluid mb-2" alt="red sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=11" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="3, 4" data-sort="red sample">
-                          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=4" data-toggle="lightbox" data-title="sample 4 - red">
-                            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=4" class="img-fluid mb-2" alt="red sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=12" class="img-fluid mb-2"/>
                           </a>
                         </div>
                       </div>
@@ -158,28 +155,28 @@
                   <div class="row justify-content-center" id="arow4">
                     <div class="col-sm-6">
                       <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3" data-category="1" data-sort="white sample">
-                          <a href="https://via.placeholder.com/1200/FFFFFF.png?text=1" data-toggle="lightbox" data-title="sample 1 - white">
-                            <img src="https://via.placeholder.com/300/FFFFFF?text=1" class="img-fluid mb-2" alt="white sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=13" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="2, 4" data-sort="black sample">
-                          <a href="https://via.placeholder.com/1200/000000.png?text=2" data-toggle="lightbox" data-title="sample 2 - black">
-                            <img src="https://via.placeholder.com/300/000000?text=2" class="img-fluid mb-2" alt="black sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=14" class="img-fluid mb-2"/>
                           </a>
                         </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3" data-category="3, 4" data-sort="red sample">
-                          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=3" data-toggle="lightbox" data-title="sample 3 - red">
-                            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=3" class="img-fluid mb-2" alt="red sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=15" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="3, 4" data-sort="red sample">
-                          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=4" data-toggle="lightbox" data-title="sample 4 - red">
-                            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=4" class="img-fluid mb-2" alt="red sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=16" class="img-fluid mb-2"/>
                           </a>
                         </div>
                       </div>
@@ -188,28 +185,28 @@
                   <div class="row justify-content-center mb-5" id="arow5">
                     <div class="col-sm-6">
                       <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3" data-category="1" data-sort="white sample">
-                          <a href="https://via.placeholder.com/1200/FFFFFF.png?text=1" data-toggle="lightbox" data-title="sample 1 - white">
-                            <img src="https://via.placeholder.com/300/FFFFFF?text=1" class="img-fluid mb-2" alt="white sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=17" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="2, 4" data-sort="black sample">
-                          <a href="https://via.placeholder.com/1200/000000.png?text=2" data-toggle="lightbox" data-title="sample 2 - black">
-                            <img src="https://via.placeholder.com/300/000000?text=2" class="img-fluid mb-2" alt="black sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=18" class="img-fluid mb-2"/>
                           </a>
                         </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3" data-category="3, 4" data-sort="red sample">
-                          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=3" data-toggle="lightbox" data-title="sample 3 - red">
-                            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=3" class="img-fluid mb-2" alt="red sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=19" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="3, 4" data-sort="red sample">
-                          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=4" data-toggle="lightbox" data-title="sample 4 - red">
-                            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=4" class="img-fluid mb-2" alt="red sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=20" class="img-fluid mb-2"/>
                           </a>
                         </div>
                       </div>
@@ -218,28 +215,28 @@
                   <div class="row justify-content-center" id="arow6">
                     <div class="col-sm-6">
                       <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3" data-category="1" data-sort="white sample">
-                          <a href="https://via.placeholder.com/1200/FFFFFF.png?text=1" data-toggle="lightbox" data-title="sample 1 - white">
-                            <img src="https://via.placeholder.com/300/FFFFFF?text=1" class="img-fluid mb-2" alt="white sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=21" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="2, 4" data-sort="black sample">
-                          <a href="https://via.placeholder.com/1200/000000.png?text=2" data-toggle="lightbox" data-title="sample 2 - black">
-                            <img src="https://via.placeholder.com/300/000000?text=2" class="img-fluid mb-2" alt="black sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=22" class="img-fluid mb-2"/>
                           </a>
                         </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3" data-category="3, 4" data-sort="red sample">
-                          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=3" data-toggle="lightbox" data-title="sample 3 - red">
-                            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=3" class="img-fluid mb-2" alt="red sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=23" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="3, 4" data-sort="red sample">
-                          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=4" data-toggle="lightbox" data-title="sample 4 - red">
-                            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=4" class="img-fluid mb-2" alt="red sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=24" class="img-fluid mb-2"/>
                           </a>
                         </div>
                       </div>
@@ -248,28 +245,28 @@
                   <div class="row justify-content-center" id="arow7">
                     <div class="col-sm-6">
                       <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3" data-category="1" data-sort="white sample">
-                          <a href="https://via.placeholder.com/1200/FFFFFF.png?text=1" data-toggle="lightbox" data-title="sample 1 - white">
-                            <img src="https://via.placeholder.com/300/FFFFFF?text=1" class="img-fluid mb-2" alt="white sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=25" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="2, 4" data-sort="black sample">
-                          <a href="https://via.placeholder.com/1200/000000.png?text=2" data-toggle="lightbox" data-title="sample 2 - black">
-                            <img src="https://via.placeholder.com/300/000000?text=2" class="img-fluid mb-2" alt="black sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=26" class="img-fluid mb-2"/>
                           </a>
                         </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3" data-category="3, 4" data-sort="red sample">
-                          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=3" data-toggle="lightbox" data-title="sample 3 - red">
-                            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=3" class="img-fluid mb-2" alt="red sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=27" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="3, 4" data-sort="red sample">
-                          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=4" data-toggle="lightbox" data-title="sample 4 - red">
-                            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=4" class="img-fluid mb-2" alt="red sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=28" class="img-fluid mb-2"/>
                           </a>
                         </div>
                       </div>
@@ -278,28 +275,28 @@
                   <div class="row justify-content-center" id="arow8">
                     <div class="col-sm-6">
                       <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3" data-category="1" data-sort="white sample">
-                          <a href="https://via.placeholder.com/1200/FFFFFF.png?text=1" data-toggle="lightbox" data-title="sample 1 - white">
-                            <img src="https://via.placeholder.com/300/FFFFFF?text=1" class="img-fluid mb-2" alt="white sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=29" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="2, 4" data-sort="black sample">
-                          <a href="https://via.placeholder.com/1200/000000.png?text=2" data-toggle="lightbox" data-title="sample 2 - black">
-                            <img src="https://via.placeholder.com/300/000000?text=2" class="img-fluid mb-2" alt="black sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=30" class="img-fluid mb-2"/>
                           </a>
                         </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3" data-category="3, 4" data-sort="red sample">
-                          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=3" data-toggle="lightbox" data-title="sample 3 - red">
-                            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=3" class="img-fluid mb-2" alt="red sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=31" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="3, 4" data-sort="red sample">
-                          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=4" data-toggle="lightbox" data-title="sample 4 - red">
-                            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=4" class="img-fluid mb-2" alt="red sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=32" class="img-fluid mb-2"/>
                           </a>
                         </div>
                       </div>
@@ -319,28 +316,28 @@
                   <div class="row justify-content-center" id="brow1">
                     <div class="col-sm-6">
                       <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3" data-category="1" data-sort="white sample">
-                          <a href="https://via.placeholder.com/1200/FFFFFF.png?text=1" data-toggle="lightbox" data-title="sample 1 - white">
-                            <img src="https://via.placeholder.com/300/FFFFFF?text=1" class="img-fluid mb-2" alt="white sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=1" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="2, 4" data-sort="black sample">
-                          <a href="https://via.placeholder.com/1200/000000.png?text=2" data-toggle="lightbox" data-title="sample 2 - black">
-                            <img src="https://via.placeholder.com/300/000000?text=2" class="img-fluid mb-2" alt="black sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=2" class="img-fluid mb-2"/>
                           </a>
                         </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3" data-category="3, 4" data-sort="red sample">
-                          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=3" data-toggle="lightbox" data-title="sample 3 - red">
-                            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=3" class="img-fluid mb-2" alt="red sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=3" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="3, 4" data-sort="red sample">
-                          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=4" data-toggle="lightbox" data-title="sample 4 - red">
-                            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=4" class="img-fluid mb-2" alt="red sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=4" class="img-fluid mb-2"/>
                           </a>
                         </div>
                       </div>
@@ -349,28 +346,28 @@
                   <div class="row justify-content-center" id="brow2">
                     <div class="col-sm-6">
                       <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3" data-category="1" data-sort="white sample">
-                          <a href="https://via.placeholder.com/1200/FFFFFF.png?text=1" data-toggle="lightbox" data-title="sample 1 - white">
-                            <img src="https://via.placeholder.com/300/FFFFFF?text=1" class="img-fluid mb-2" alt="white sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=5" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="2, 4" data-sort="black sample">
-                          <a href="https://via.placeholder.com/1200/000000.png?text=2" data-toggle="lightbox" data-title="sample 2 - black">
-                            <img src="https://via.placeholder.com/300/000000?text=2" class="img-fluid mb-2" alt="black sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=6" class="img-fluid mb-2"/>
                           </a>
                         </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3" data-category="3, 4" data-sort="red sample">
-                          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=3" data-toggle="lightbox" data-title="sample 3 - red">
-                            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=3" class="img-fluid mb-2" alt="red sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=7" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="3, 4" data-sort="red sample">
-                          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=4" data-toggle="lightbox" data-title="sample 4 - red">
-                            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=4" class="img-fluid mb-2" alt="red sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=8" class="img-fluid mb-2"/>
                           </a>
                         </div>
                       </div>
@@ -379,28 +376,28 @@
                   <div class="row justify-content-center mb-5" id="brow3">
                     <div class="col-sm-6">
                       <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3" data-category="1" data-sort="white sample">
-                          <a href="https://via.placeholder.com/1200/FFFFFF.png?text=1" data-toggle="lightbox" data-title="sample 1 - white">
-                            <img src="https://via.placeholder.com/300/FFFFFF?text=1" class="img-fluid mb-2" alt="white sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=9" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="2, 4" data-sort="black sample">
-                          <a href="https://via.placeholder.com/1200/000000.png?text=2" data-toggle="lightbox" data-title="sample 2 - black">
-                            <img src="https://via.placeholder.com/300/000000?text=2" class="img-fluid mb-2" alt="black sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=10" class="img-fluid mb-2"/>
                           </a>
                         </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3" data-category="3, 4" data-sort="red sample">
-                          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=3" data-toggle="lightbox" data-title="sample 3 - red">
-                            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=3" class="img-fluid mb-2" alt="red sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=11" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="3, 4" data-sort="red sample">
-                          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=4" data-toggle="lightbox" data-title="sample 4 - red">
-                            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=4" class="img-fluid mb-2" alt="red sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=12" class="img-fluid mb-2"/>
                           </a>
                         </div>
                       </div>
@@ -409,19 +406,19 @@
                   <div class="row justify-content-center" id="brow4">
                     <div class="col-sm-6">
                       <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3" data-category="1" data-sort="white sample">
-                          <a href="https://via.placeholder.com/1200/FFFFFF.png?text=1" data-toggle="lightbox" data-title="sample 1 - white">
-                            <img src="https://via.placeholder.com/300/FFFFFF?text=1" class="img-fluid mb-2" alt="white sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=13" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="2, 4" data-sort="black sample">
-                          <a href="https://via.placeholder.com/1200/000000.png?text=2" data-toggle="lightbox" data-title="sample 2 - black">
-                            <img src="https://via.placeholder.com/300/000000?text=2" class="img-fluid mb-2" alt="black sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=14" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="2, 4" data-sort="black sample">
-                          <a href="https://via.placeholder.com/1200/000000.png?text=2" data-toggle="lightbox" data-title="sample 2 - black">
-                            <img src="https://via.placeholder.com/300/000000?text=2" class="img-fluid mb-2" alt="black sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=15" class="img-fluid mb-2"/>
                           </a>
                         </div>
                       </div>
@@ -430,19 +427,19 @@
                   <div class="row justify-content-center" id="brow5">
                     <div class="col-sm-6">
                       <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3" data-category="1" data-sort="white sample">
-                          <a href="https://via.placeholder.com/1200/FFFFFF.png?text=1" data-toggle="lightbox" data-title="sample 1 - white">
-                            <img src="https://via.placeholder.com/300/FFFFFF?text=1" class="img-fluid mb-2" alt="white sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=16" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="2, 4" data-sort="black sample">
-                          <a href="https://via.placeholder.com/1200/000000.png?text=2" data-toggle="lightbox" data-title="sample 2 - black">
-                            <img src="https://via.placeholder.com/300/000000?text=2" class="img-fluid mb-2" alt="black sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=17" class="img-fluid mb-2"/>
                           </a>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="2, 4" data-sort="black sample">
-                          <a href="https://via.placeholder.com/1200/000000.png?text=2" data-toggle="lightbox" data-title="sample 2 - black">
-                            <img src="https://via.placeholder.com/300/000000?text=2" class="img-fluid mb-2" alt="black sample"/>
+                        <div class="filtr-item col-sm-3">
+                          <a onclick="infoModal(this)">
+                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=18" class="img-fluid mb-2"/>
                           </a>
                         </div>
                       </div>
@@ -458,6 +455,37 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+  <div id="galleryModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="text-center mb-0 text-muted">info</h3>
+          <button type="button" class="close float-right" aria-label="Close" data-dismiss="modal">
+            <span aria-hidden="true">&#xD7;</span>
+          </button>
+        </div>
+        <div class="modal-body text-center bg-alt p-5">
+          <div class="row">
+            <div class="col-5 text-center align-self-center">
+              <img src="/dist/img/user1-128x128.jpg" alt="사진" class="img-circle img-fluid mb-3">
+              <h2 class="lead"><b id="name">이름</b></h2>
+            </div>
+            <div class="col-7">
+              <p class="text-muted text-sm" id="birth"><b>생년월일: </b></p>
+              <p class="text-muted text-sm" id="phone"><span><i class="fas fa-lg fa-phone"></i></span></p>
+              <p class="text-muted text-sm" id="email"><span><i class="fas fa-envelope"></i></span></p>
+              <p class="text-muted text-sm" id="residence"><b>거주지: </b></p>
+              <p class="text-muted text-sm" id="belong"><b>소속: </b></p>
+              <p class="text-muted text-sm" id="major"><b>전공: </b></p>
+              <p class="text-muted text-sm" id="graduate"><b>최종 학력: </b></p>
+              <p class="text-muted text-sm" id="start"><b>수강시작일: </b></p>
+              <p class="text-muted text-sm" id="note"><b>특이사항: </b></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </th:block>
 </html>

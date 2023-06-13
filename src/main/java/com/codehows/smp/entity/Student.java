@@ -51,6 +51,8 @@ public class Student {
     @Column(length = 400)
     private String note;
 
+    private Integer seat;
+
     public static Student createStudent(StudentDto studentDto) {
         return Student.builder()
                 .name(studentDto.getName())
@@ -65,6 +67,7 @@ public class Student {
                 .start(studentDto.getStart())
                 .status(studentDto.getStatus())
                 .note(studentDto.getNote())
+                .seat(studentDto.getSeat())
                 .build();
     }
 
@@ -72,7 +75,7 @@ public class Student {
     public Student(String name, String birth, String phone,
                    String classAB, String residence, String belong,
                    String major, String graduate, String email,
-                   LocalDate start, Boolean status, String note) {
+                   LocalDate start, Boolean status, String note, Integer seat) {
         this.name = name;
         this.birth = birth;
         this.phone = phone;
@@ -85,6 +88,7 @@ public class Student {
         this.start = start;
         this.status = status;
         this.note = note;
+        this.seat = seat;
     }
 
     public void updateStudent(StudentDto studentDto) {
@@ -100,5 +104,6 @@ public class Student {
         this.start = studentDto.getStart();
         this.status = studentDto.getStatus();
         this.note = studentDto.getNote();
+        this.seat = studentDto.getSeat();
     }
 }
