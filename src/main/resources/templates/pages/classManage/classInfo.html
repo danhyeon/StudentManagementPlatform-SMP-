@@ -10,18 +10,76 @@
   <script src="/plugins/ekko-lightbox/ekko-lightbox.min.js"></script>
   <!-- Filterizr-->
   <script src="/plugins/filterizr/jquery.filterizr.min.js"></script>
+
   <!--  컴포넌트의 동작에 필요한 인라인 스크립트-->
   <script th:inline="javascript">
-    $(function () {
-      $(document).on('click', '[data-toggle="lightbox"]', function(event) {
-        event.preventDefault();
-        $(this).ekkoLightbox({
-          alwaysShowClose: true
-        });
-      });
+    $(function() {
+      $.ajax({
+        url: "/class/seats",
+        type: "POST",
+        dataType: "json",
+        cache: false,
+        success: function(result) {
+          let seatA = 'span#seatA-';
+          let seatB = 'span#seatB-';
+          var dataA = result.dataA;
+          var dataB = result.dataB;
+          $.each(dataA, function (index, item) {
+            var seat = seatA + item.seat;
+            $(seat).text(item.name);
+            $(seat).css("color", "black");
+            $(seat).data("sid", item.id);
+          });
+          $.each(dataB, function (index, item) {
+            var seat = seatB + item.seat;
+            $(seat).text(item.name);
+            $(seat).css("color", "black");
+            $(seat).data("sid", item.id);
+          });
+          // alert($('span#seatA-1').data('sid'));
+        }
+      })
     })
-    function infoModal(obj) {
-      $('#galleryModal').modal();
+    $(".background-wrap").on("click", function() {
+      var id = $(this).children().children().data('sid');
+      if(id != null) {
+        initModal();
+        infoModal(id);
+        $('#galleryModal').modal();
+      }
+    })
+    function infoModal(id) {
+      var url = "/class/detail/" + id;
+      $.ajax({
+        url: url,
+        type: "GET",
+        dataType : "json",
+        cache   : false,
+        success  : function(data){
+          $('#Mname').text(' ' + data.name);
+          $('#Mbirth').text(' ' + data.birth);
+          $('#Mphone').text('' + data.phone);
+          $('#Memail').text(' ' + data.email);
+          $('#Mresidence').text(' ' + data.residence);
+          $('#Mbelong').text(' ' + data.belong);
+          $('#Mmajor').text(' ' + data.major);
+          $('#Mgraduate').text(' ' + data.graduate);
+          $('#Mstart').text(' ' + data.start);
+          $('#Mnote').text(' ' + data.note);
+        },
+      });
+    }
+    function initModal() {
+      $('#Mname').text('');
+      $('#Mbirth').text('');
+      $('#Mphone').text('');
+      $('#Memail').text('');
+      $('#Mresidence').text('');
+      $('#Mbelong').text('');
+      $('#Mmajor').text('');
+      $('#Mgraduate').text('');
+      $('#Mstart').text('');
+      $('#Mnote').text('');
     }
   </script>
 </th:block>
@@ -30,6 +88,32 @@
 <th:block layout:fragment="css">
   <!-- Ekko Lightbox -->
   <link rel="stylesheet" href="/plugins/ekko-lightbox/ekko-lightbox.css">
+  <!--  컴포넌트의 동작에 필요한 인라인 css-->
+  <style th:inline="css">
+    .background-wrap:hover {
+      background-image: url('/image/seatHover.png');
+    }
+    .background-wrap {
+      background-image: url('/image/seatDefault.png');
+      width: 100px;
+      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: auto;
+    }
+    .content {
+      display: flex;
+      flex-direction: column;
+    }
+    .content span {
+      color: gray;
+    }
+    .content span:nth-child(1) {
+      font-size: 15px;
+      font-weight: bold;
+    }
+  </style>
 </th:block>
 
 <th:block layout:fragment="content">
@@ -61,247 +145,315 @@
                 <h4 class="card-title">A반 자리배치도</h4>
               </div>
               <div class="card-body">
-                <div class="filter-container-fluid">
-                  <div class="row justify-content-center" id="arow1">
+                <div class="filter-container-fluid" id="seatsA">
+                  <div class="row justify-content-center"><h3>전면 칠판</h3></div>
+                  <hr>
+                  <div class="row pb-1" id="arow1">
                     <div class="col-sm-6">
-                      <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3" data-category="1" data-sort="white sample">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=1" class="img-fluid mb-2" alt="black sample"/>
-                          </a>
+                      <div class="row">
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-1">공석</span>
+                            </div>
+                          </div>
                         </div>
-                        <div class="filtr-item col-sm-3" data-category="2, 4" data-sort="black sample">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=2" class="img-fluid mb-2" alt="black sample"/>
-                          </a>
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-2">공석</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
-                      <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=3" class="img-fluid mb-2"/>
-                          </a>
+                      <div class="row">
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-3">공석</span>
+                            </div>
+                          </div>
                         </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=4" class="img-fluid mb-2"/>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row justify-content-center" id="arow2">
-                    <div class="col-sm-6">
-                      <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=5" class="img-fluid mb-2"/>
-                          </a>
-                        </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=6" class="img-fluid mb-2"/>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=7" class="img-fluid mb-2"/>
-                          </a>
-                        </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=8" class="img-fluid mb-2"/>
-                          </a>
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-4">공석</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="row justify-content-center mb-5" id="arow3">
+                  <div class="row pb-1" id="arow2">
                     <div class="col-sm-6">
-                      <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=9" class="img-fluid mb-2"/>
-                          </a>
+                      <div class="row">
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-5">공석</span>
+                            </div>
+                          </div>
                         </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=10" class="img-fluid mb-2"/>
-                          </a>
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-6">공석</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
-                      <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=11" class="img-fluid mb-2"/>
-                          </a>
+                      <div class="row">
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-7">공석</span>
+                            </div>
+                          </div>
                         </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=12" class="img-fluid mb-2"/>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row justify-content-center" id="arow4">
-                    <div class="col-sm-6">
-                      <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=13" class="img-fluid mb-2"/>
-                          </a>
-                        </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=14" class="img-fluid mb-2"/>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=15" class="img-fluid mb-2"/>
-                          </a>
-                        </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=16" class="img-fluid mb-2"/>
-                          </a>
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-8">공석</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="row justify-content-center mb-5" id="arow5">
+                  <div class="row mb-5" id="arow3">
                     <div class="col-sm-6">
-                      <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=17" class="img-fluid mb-2"/>
-                          </a>
+                      <div class="row">
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-9">공석</span>
+                            </div>
+                          </div>
                         </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=18" class="img-fluid mb-2"/>
-                          </a>
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-10">공석</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
-                      <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=19" class="img-fluid mb-2"/>
-                          </a>
+                      <div class="row">
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-11">공석</span>
+                            </div>
+                          </div>
                         </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=20" class="img-fluid mb-2"/>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row justify-content-center" id="arow6">
-                    <div class="col-sm-6">
-                      <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=21" class="img-fluid mb-2"/>
-                          </a>
-                        </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=22" class="img-fluid mb-2"/>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=23" class="img-fluid mb-2"/>
-                          </a>
-                        </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=24" class="img-fluid mb-2"/>
-                          </a>
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-12">공석</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="row justify-content-center" id="arow7">
+                  <div class="row pb-1" id="arow4">
                     <div class="col-sm-6">
-                      <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=25" class="img-fluid mb-2"/>
-                          </a>
+                      <div class="row">
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-13">공석</span>
+                            </div>
+                          </div>
                         </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=26" class="img-fluid mb-2"/>
-                          </a>
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-14">공석</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
-                      <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=27" class="img-fluid mb-2"/>
-                          </a>
+                      <div class="row">
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-15">공석</span>
+                            </div>
+                          </div>
                         </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=28" class="img-fluid mb-2"/>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row justify-content-center" id="arow8">
-                    <div class="col-sm-6">
-                      <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=29" class="img-fluid mb-2"/>
-                          </a>
-                        </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=30" class="img-fluid mb-2"/>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=31" class="img-fluid mb-2"/>
-                          </a>
-                        </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=32" class="img-fluid mb-2"/>
-                          </a>
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-16">공석</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
+                  <div class="row mb-5" id="arow5">
+                    <div class="col-sm-6">
+                      <div class="row">
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-17">공석</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-18">공석</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="row">
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-19">공석</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-20">공석</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row pb-1" id="arow6">
+                    <div class="col-sm-6">
+                      <div class="row">
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-21">공석</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-22">공석</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="row">
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-23">공석</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-24">공석</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row pb-1" id="arow7">
+                    <div class="col-sm-6">
+                      <div class="row">
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-25">공석</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-26">공석</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="row">
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-27">공석</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-28">공석</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row pb-1" id="arow8">
+                    <div class="col-sm-6">
+                      <div class="row">
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-29">공석</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-30">공석</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="row pb-1">
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-31">공석</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatA-32">공석</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row justify-content-center pt-1"><h3>후면 칠판</h3></div>
                 </div>
               </div>
             </div>
@@ -313,138 +465,178 @@
               </div>
               <div class="card-body">
                 <div class="filter-container-fluid">
-                  <div class="row justify-content-center" id="brow1">
+                  <div class="row justify-content-center"><h3>전면 칠판</h3></div>
+                  <hr>
+                  <div class="row pb-1" id="brow1">
                     <div class="col-sm-6">
-                      <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=1" class="img-fluid mb-2"/>
-                          </a>
+                      <div class="row">
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatB-1">공석</span>
+                            </div>
+                          </div>
                         </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=2" class="img-fluid mb-2"/>
-                          </a>
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatB-2">공석</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
-                      <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=3" class="img-fluid mb-2"/>
-                          </a>
+                      <div class="row">
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatB-3">공석</span>
+                            </div>
+                          </div>
                         </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=4" class="img-fluid mb-2"/>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row justify-content-center" id="brow2">
-                    <div class="col-sm-6">
-                      <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=5" class="img-fluid mb-2"/>
-                          </a>
-                        </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=6" class="img-fluid mb-2"/>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=7" class="img-fluid mb-2"/>
-                          </a>
-                        </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=8" class="img-fluid mb-2"/>
-                          </a>
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatB-4">공석</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="row justify-content-center mb-5" id="brow3">
+                  <div class="row pb-1" id="brow2">
                     <div class="col-sm-6">
-                      <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=9" class="img-fluid mb-2"/>
-                          </a>
+                      <div class="row">
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatB-5">공석</span>
+                            </div>
+                          </div>
                         </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=10" class="img-fluid mb-2"/>
-                          </a>
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatB-6">공석</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
-                      <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=11" class="img-fluid mb-2"/>
-                          </a>
+                      <div class="row">
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatB-7">공석</span>
+                            </div>
+                          </div>
                         </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=12" class="img-fluid mb-2"/>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row justify-content-center" id="brow4">
-                    <div class="col-sm-6">
-                      <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=13" class="img-fluid mb-2"/>
-                          </a>
-                        </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=14" class="img-fluid mb-2"/>
-                          </a>
-                        </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=15" class="img-fluid mb-2"/>
-                          </a>
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatB-8">공석</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="row justify-content-center" id="brow5">
+                  <div class="row mb-5" id="brow3">
                     <div class="col-sm-6">
-                      <div class="row justify-content-center">
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=16" class="img-fluid mb-2"/>
-                          </a>
+                      <div class="row">
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatB-9">공석</span>
+                            </div>
+                          </div>
                         </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=17" class="img-fluid mb-2"/>
-                          </a>
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatB-10">공석</span>
+                            </div>
+                          </div>
                         </div>
-                        <div class="filtr-item col-sm-3">
-                          <a onclick="infoModal(this)">
-                            <img src="https://via.placeholder.com/300/c5cae9/000000?text=18" class="img-fluid mb-2"/>
-                          </a>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="row">
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatB-11">공석</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="filtr-item col-sm-6 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatB-12">공석</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
+                  <div class="row justify-content-center pb-1" id="brow4">
+                    <div class="col-sm-6">
+                      <div class="row justify-content-center">
+                        <div class="filtr-item col-sm-4 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatB-13">공석</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="filtr-item col-sm-4 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatB-14">공석</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="filtr-item col-sm-4 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatB-15">공석</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row justify-content-center pb-1" id="brow5">
+                    <div class="col-sm-6">
+                      <div class="row justify-content-center">
+                        <div class="filtr-item col-sm-4 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatB-16">공석</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="filtr-item col-sm-4 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatB-17">공석</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="filtr-item col-sm-4 text-on-img">
+                          <div class="background-wrap">
+                            <div class="content">
+                              <span id="seatB-18">공석</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row justify-content-center pt-1"><h3>후면 칠판</h3></div>
                 </div>
               </div>
             </div>
@@ -468,18 +660,18 @@
           <div class="row">
             <div class="col-5 text-center align-self-center">
               <img src="/dist/img/user1-128x128.jpg" alt="사진" class="img-circle img-fluid mb-3">
-              <h2 class="lead"><b id="name">이름</b></h2>
+              <h2 class="lead"><b id="Mname"></b></h2>
             </div>
             <div class="col-7">
-              <p class="text-muted text-sm" id="birth"><b>생년월일: </b></p>
-              <p class="text-muted text-sm" id="phone"><span><i class="fas fa-lg fa-phone"></i></span></p>
-              <p class="text-muted text-sm" id="email"><span><i class="fas fa-envelope"></i></span></p>
-              <p class="text-muted text-sm" id="residence"><b>거주지: </b></p>
-              <p class="text-muted text-sm" id="belong"><b>소속: </b></p>
-              <p class="text-muted text-sm" id="major"><b>전공: </b></p>
-              <p class="text-muted text-sm" id="graduate"><b>최종 학력: </b></p>
-              <p class="text-muted text-sm" id="start"><b>수강시작일: </b></p>
-              <p class="text-muted text-sm" id="note"><b>특이사항: </b></p>
+              <p class="text-muted text-sm"><b>생년월일: </b><span id="Mbirth"></span></p>
+              <p class="text-muted text-sm"><span><i class="fas fa-lg fa-phone"></i></span><span id="Mphone"></span></p>
+              <p class="text-muted text-sm"><span><i class="fas fa-envelope"></i></span><span id="Memail"></span></p>
+              <p class="text-muted text-sm"><b>거주지: </b><span id="Mresidence"></span></p>
+              <p class="text-muted text-sm"><b>소속: </b><span id="Mbelong"></span></p>
+              <p class="text-muted text-sm"><b>전공: </b><span id="Mmajor"></span></p>
+              <p class="text-muted text-sm"><b>최종 학력: </b><span id="Mgraduate"></span></p>
+              <p class="text-muted text-sm"><b>수강시작일: </b><span id="Mstart"></span></p>
+              <p class="text-muted text-sm"><b>특이사항: </b><span id="Mnote"></span></p>
             </div>
           </div>
         </div>
