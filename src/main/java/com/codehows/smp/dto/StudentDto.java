@@ -1,8 +1,10 @@
 package com.codehows.smp.dto;
 
 import com.codehows.smp.entity.Student;
+import com.codehows.smp.entity.StudentImg;
 import lombok.*;
 import org.modelmapper.ModelMapper;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -39,7 +41,7 @@ public class StudentDto {
 
     private String note;
 
-    private Integer seat;
+    private StudentImg imgFile;
 
     private static ModelMapper modelMapper = new ModelMapper();
 

@@ -5,11 +5,15 @@ import com.codehows.smp.entity.Student;
 import com.codehows.smp.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -49,4 +53,12 @@ public class StudentService {
                 .orElseThrow(EntityExistsException::new);
         studentRepository.delete(student);
     }
+
+//    public void saveStudentImg(MultipartFile imgFile) throws IOException {
+//        UUID uuid = UUID.randomUUID();
+//        String fileName = uuid.toString() + "_" + imgFile.getOriginalFilename();
+//        File profileImg = new File(uploadPath, fileName);
+//        imgFile.transferTo(profileImg);
+//
+//    }
 }

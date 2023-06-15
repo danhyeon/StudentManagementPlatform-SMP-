@@ -11,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,5 +45,18 @@ public class ClassManageController {
     public ResponseEntity getDetail(@PathVariable("id")Long id) {
         StudentDto studentDto = studentService.getStudent(id);
         return new ResponseEntity<StudentDto>(studentDto, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/profile")
+    public CommentRegisterResponse register(@RequestParam (value = "studentId") Long studentId,
+                                            @RequestPart (value = "imgFile") MultipartFile imgFile) throws IOException {
+
+        int productId = classService.addImg(studentId, imgFile);
+
+        // response 만들기
+        return CommentRegisterResponse.builder()
+                .result(success)
+                .productId(productId)
+                .build();
     }
 }

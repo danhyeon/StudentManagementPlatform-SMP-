@@ -2,10 +2,8 @@ package com.codehows.smp.entity;
 
 import com.codehows.smp.dto.StudentDto;
 import lombok.*;
-
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name="student")
@@ -16,7 +14,7 @@ import java.time.LocalDateTime;
 public class Student {
 
     @Id
-    @Column(name="student_Id")
+    @Column(name="student_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
@@ -67,7 +65,6 @@ public class Student {
                 .start(studentDto.getStart())
                 .status(studentDto.getStatus())
                 .note(studentDto.getNote())
-                .seat(studentDto.getSeat())
                 .build();
     }
 
@@ -75,7 +72,8 @@ public class Student {
     public Student(String name, String birth, String phone,
                    String classAB, String residence, String belong,
                    String major, String graduate, String email,
-                   LocalDate start, Boolean status, String note, Integer seat) {
+                   LocalDate start, Boolean status, String note,
+                   Integer seat) {
         this.name = name;
         this.birth = birth;
         this.phone = phone;
@@ -104,6 +102,5 @@ public class Student {
         this.start = studentDto.getStart();
         this.status = studentDto.getStatus();
         this.note = studentDto.getNote();
-        this.seat = studentDto.getSeat();
     }
 }

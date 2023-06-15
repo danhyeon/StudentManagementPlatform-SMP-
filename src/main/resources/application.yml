@@ -39,3 +39,8 @@ spring:
     prefix: classpath:/templates/
     cache: false
 
+  multipart:
+    max-file-size: 20MB
+    max-request-size: 100MB
+
+  upload.path : /C:/codehowsSMP/img/
