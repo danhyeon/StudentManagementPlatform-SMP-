@@ -1,5 +1,7 @@
 package com.codehows.smp.entity;
 
+import com.codehows.smp.dto.StudentDto;
+import com.codehows.smp.dto.StudentImgDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +11,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name="student_img")
+@NoArgsConstructor
 public class StudentImg {
 
     @Id
@@ -16,21 +19,16 @@ public class StudentImg {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String imgName;
-
     private String oriImgName;
 
     private String imgUrl;
-
-    private String repImgYn;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id")
     private Student student;
 
-    public void updateStudentImg(String oriImgName, String imgName, String imgUrl) {
+    public void updateStudentImg(String oriImgName, String imgUrl) {
         this.oriImgName = oriImgName;
-        this.imgName = imgName;
         this.imgUrl = imgUrl;
     }
 }

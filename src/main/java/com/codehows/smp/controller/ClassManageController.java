@@ -2,6 +2,7 @@ package com.codehows.smp.controller;
 
 import com.codehows.smp.dto.SeatDto;
 import com.codehows.smp.dto.StudentDto;
+import com.codehows.smp.dto.StudentImgDto;
 import com.codehows.smp.entity.Student;
 import com.codehows.smp.service.ClassService;
 import com.codehows.smp.service.StudentService;
@@ -14,9 +15,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RequestMapping(value = "/class")
 @Controller
@@ -43,20 +48,39 @@ public class ClassManageController {
     @ResponseBody
     @GetMapping(value = "/detail/{id}")
     public ResponseEntity getDetail(@PathVariable("id")Long id) {
+        HashMap<String, Object> map = new HashMap<>();
         StudentDto studentDto = studentService.getStudent(id);
-        return new ResponseEntity<StudentDto>(studentDto, HttpStatus.OK);
+        map.put("student", studentDto);
+        StudentImgDto studentImgDto = classService.getProfileImg(id);
+        if(studentImgDto==null) {
+            map.put("image", "gray.png");
+        }else{
+            map.put("image", studentImgDto.getOriImgName());
+        }
+        return new ResponseEntity<Object>(map, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/profile")
-    public CommentRegisterResponse register(@RequestParam (value = "studentId") Long studentId,
-                                            @RequestPart (value = "imgFile") MultipartFile imgFile) throws IOException {
-
-        int productId = classService.addImg(studentId, imgFile);
-
-        // response 만들기
-        return CommentRegisterResponse.builder()
-                .result(success)
-                .productId(productId)
-                .build();
+    @ResponseBody
+    @PostMapping(value = "/profileImg/{studentId}")
+    public StudentImgDto addImg(@RequestParam("img") MultipartFile img, @PathVariable("studentId") Long studentId) throws IOException {
+        String os = System.getProperty("os.name").toLowerCase();
+        String imageRoot = "";
+        if(os.contains("win")) {
+            imageRoot = "c:/Home/Resource/assets/";
+        }
+        else if(os.contains("linux")) {
+            imageRoot = "/Home/Resource/assets/";
+        }
+        UUID uuid = UUID.randomUUID();
+        String imgFileName = uuid + "_" + img.getOriginalFilename();
+        Path imgPath = Paths.get(imageRoot + imgFileName);
+        try{
+            Files.write(imgPath, img.getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        StudentImgDto studentImgDto = new StudentImgDto(imgFileName, imageRoot);
+        classService.addProfileImg(studentImgDto, studentId);
+        return studentImgDto;
     }
 }
