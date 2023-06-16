@@ -10,12 +10,57 @@
   <script src="/plugins/ekko-lightbox/ekko-lightbox.min.js"></script>
   <!-- Filterizr-->
   <script src="/plugins/filterizr/jquery.filterizr.min.js"></script>
+  <!-- Select2 -->
+  <script src="../../plugins/select2/js/select2.full.min.js"></script>
 
   <!--  컴포넌트의 동작에 필요한 인라인 스크립트-->
   <script th:inline="javascript">
     $(function(){
+      getSeats();
       $("#profileImg").click(function(){
         $('#imgUpload').click();
+      });
+      $('#editSeatsA').click(function(){
+        $('#editSeatsA').css('display', 'none');
+        $('#saveSeatsA').css('display', 'block');
+        $('#bCard').css('display', 'none');
+        const aSeatsSize = 32;
+        let seatA = 'span#seatA-';
+        for(var i=1; i<=aSeatsSize; i++) {
+          var seat = seatA + i;
+          $(seat).css("color", "gray");
+          $(seat).text(i);
+        }
+        showEdit("A");
+      });
+      $('#editSeatsB').click(function(){
+        $('#editSeatsB').css('display', 'none');
+        $('#saveSeatsB').css('display', 'block');
+        $('#aCard').css('display', 'none');
+        const bSeatsSize = 18;
+        let seatB = 'span#seatB-';
+        for(var j=1; j<=bSeatsSize; j++) {
+          var seat = seatB + j;
+          $(seat).css("color", "gray");
+          $(seat).text(j);
+        }
+        showEdit("B");
+      });
+      $('#saveSeatsA').click(function() {
+        //ajax 업데이트
+        closeEdit();
+        $('#editSeatsA').css('display', 'block');
+        $('#saveSeatsA').css('display', 'none');
+        $('#bCard').css('display', 'block');
+        getSeats();
+      });
+      $('#saveSeatsB').click(function() {
+        //ajax 업데이트
+        closeEdit();
+        $('#editSeatsB').css('display', 'block');
+        $('#saveSeatsB').css('display', 'none');
+        $('#aCard').css('display', 'block');
+        getSeats();
       });
     });
     $('#imgUpload').change(function(event) {
@@ -30,13 +75,53 @@
       reader.readAsDataURL(file);
       $('#imgBtn').css('display', 'block');
     });
+    function showEdit(classab) {
+      var url = "/class/edit/" + classab
+      $.ajax({
+        url: url,
+        type: "GET",
+        async: true,
+        dataType : "html",
+        cache   : false,
+        success  : function(data){
+          $('#editCard').append(data);
+          $('.select2bs4').select2({
+            theme: 'bootstrap4'
+          })
+          $('#editCard').css('display', 'block');
+        },
+        error : function(jqXHR){
+          if(jqXHR.status == '401'){
+            alert('로그인 후 이용해주세요');
+            //location.href='/members/login';
+          } else{
+            alert(jqXHR.responseText);
+          }
+        }
+      });
+    }
+    function closeEdit() {
+      $('#editCard').children().remove();
+      $('#editCard').css('display', 'none');
+    }
     function isImageFile(file) {
 
       var ext = file.name.split(".").pop().toLowerCase(); // 파일명에서 확장자를 가져온다.
 
       return ($.inArray(ext, ["jpg", "jpeg", "gif", "png"]) === -1) ? false : true;
-    };
-    $(function() {
+    }
+    $(".background-wrap").on("click", function() {
+      var id = $(this).children().children().data('sid');
+      if(id != null) {
+        initModal();
+        infoModal(id);
+        $('#Mname').data("sid", id);
+        $('#imgBtn').css('display', 'none');
+        $('#imgUpload').val(null);
+        $('#galleryModal').modal();
+      }
+    })
+    function getSeats() {
       $.ajax({
         url: "/class/seats",
         type: "POST",
@@ -59,21 +144,9 @@
             $(seat).css("color", "black");
             $(seat).data("sid", item.id);
           });
-          // alert($('span#seatA-1').data('sid'));
         }
       })
-    })
-    $(".background-wrap").on("click", function() {
-      var id = $(this).children().children().data('sid');
-      if(id != null) {
-        initModal();
-        infoModal(id);
-        $('#Mname').data("sid", id);
-        $('#imgBtn').css('display', 'none');
-        $('#imgUpload').val(null);
-        $('#galleryModal').modal();
-      }
-    })
+    };
     function infoModal(id) {
       var url = "/class/detail/" + id;
       $.ajax({
@@ -140,6 +213,10 @@
 <th:block layout:fragment="css">
   <!-- Ekko Lightbox -->
   <link rel="stylesheet" href="/plugins/ekko-lightbox/ekko-lightbox.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
   <!--  컴포넌트의 동작에 필요한 인라인 css-->
   <style th:inline="css">
     .background-wrap:hover {
@@ -197,10 +274,15 @@
     <section class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-6" id="aCard">
+            <!-- 자리편집 학생 리스트 display : none<->block -->
+
+            <!-- 자리편집 학생 리스트 end -->
             <div class="card card-dafault">
               <div class="card-header">
                 <h4 class="card-title">A반 자리배치도</h4>
+                <button class="btn btn-secondary btn-sm float-right" id="editSeatsA">편집</button>
+                <button class="btn btn-info btn-sm float-right" id="saveSeatsA" style="display: none">저장</button>
               </div>
               <div class="card-body">
                 <div class="filter-container-fluid" id="seatsA">
@@ -516,10 +598,15 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <!-- 자리편집 학생 리스트 display : none<->block -->
+          <div class="col-md-6" id="editCard" style="display: none"></div>
+          <!-- 자리편집 학생 리스트 end -->
+          <div class="col-md-6" id="bCard">
             <div class="card card-dafault">
               <div class="card-header">
                 <h4 class="card-title">B반 자리배치도</h4>
+                <button class="btn btn-secondary btn-sm float-right" id="editSeatsB">편집</button>
+                <button class="btn btn-info btn-sm float-right" id="saveSeatsB" style="display: none">저장</button>
               </div>
               <div class="card-body">
                 <div class="filter-container-fluid">
@@ -709,7 +796,7 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 class="text-center mb-0 text-muted"><b id="Mname"></h3>
+          <h3 class="text-center mb-0 text-muted"><b id="Mname"></b></h3>
           <button type="button" class="close float-right" aria-label="Close" data-dismiss="modal">
             <span aria-hidden="true">&#xD7;</span>
           </button>

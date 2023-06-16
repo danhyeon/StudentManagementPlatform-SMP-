@@ -36,6 +36,14 @@ public class StudentService {
         return studentDtoList;
     }
 
+    public List<StudentDto> getClassList(String classAB) {
+        List<StudentDto> studentDtoList = new ArrayList<>();
+        for(Student s : studentRepository.findByClassAB(classAB)) {
+            studentDtoList.add(StudentDto.of(s));
+        }
+        return studentDtoList;
+    }
+
     public StudentDto getStudent(Long id) {
         Student student = studentRepository.findById(id)
                 .orElseThrow(EntityExistsException::new);

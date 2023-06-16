@@ -83,4 +83,18 @@ public class ClassManageController {
         classService.addProfileImg(studentImgDto, studentId);
         return studentImgDto;
     }
+
+    @GetMapping(value = "/edit/{classab}")
+    public String getEditCard(@PathVariable("classab") String classAB, Model model) {
+        classAB += "반";
+        List<StudentDto> studentDtoList = studentService.getClassList(classAB);
+        model.addAttribute("students", studentDtoList);
+        if(classAB.equals("A반")) {
+            model.addAttribute("class", "A");
+        }else if(classAB.equals("B반")) {
+            model.addAttribute("class", "B");
+        }
+
+        return "pages/classManage/editCard";
+    }
 }
