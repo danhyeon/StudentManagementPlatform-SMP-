@@ -33,11 +33,18 @@ public class ClassService {
     public void addProfileImg(StudentImgDto studentImgDto, Long studentId) {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(EntityExistsException::new);
-        StudentImg studentImg = new StudentImg();
-        studentImg.setOriImgName(studentImgDto.getOriImgName());
-        studentImg.setImgUrl(studentImgDto.getImgUrl());
-        studentImg.setStudent(student);
-        studentImgRepository.save(studentImg);
+        StudentImg studentImg = studentImgRepository.findByStudentId(studentId);
+        if(studentImg == null) {
+            studentImg = new StudentImg();
+            studentImg.setOriImgName(studentImgDto.getOriImgName());
+            studentImg.setImgUrl(studentImgDto.getImgUrl());
+            studentImg.setStudent(student);
+            studentImgRepository.save(studentImg);
+        }else {
+            studentImg.setOriImgName(studentImgDto.getOriImgName());
+            studentImg.setImgUrl(studentImgDto.getImgUrl());
+            studentImg.setStudent(student);
+        }
     }
 
     public StudentImgDto getProfileImg(Long studentId) {

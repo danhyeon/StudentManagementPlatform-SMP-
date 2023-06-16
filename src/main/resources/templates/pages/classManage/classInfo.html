@@ -16,9 +16,26 @@
     $(function(){
       $("#profileImg").click(function(){
         $('#imgUpload').click();
-        $('#imgBtn').css('display', 'block');
       });
     });
+    $('#imgUpload').change(function(event) {
+      var file = event.target.files[0];
+      if(!isImageFile(file)) {
+        return;
+      }
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        $("#profileImg").attr("src", e.target.result);
+      }
+      reader.readAsDataURL(file);
+      $('#imgBtn').css('display', 'block');
+    });
+    function isImageFile(file) {
+
+      var ext = file.name.split(".").pop().toLowerCase(); // 파일명에서 확장자를 가져온다.
+
+      return ($.inArray(ext, ["jpg", "jpeg", "gif", "png"]) === -1) ? false : true;
+    };
     $(function() {
       $.ajax({
         url: "/class/seats",
@@ -52,6 +69,8 @@
         initModal();
         infoModal(id);
         $('#Mname').data("sid", id);
+        $('#imgBtn').css('display', 'none');
+        $('#imgUpload').val(null);
         $('#galleryModal').modal();
       }
     })
@@ -690,7 +709,7 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 class="text-center mb-0 text-muted">info</h3>
+          <h3 class="text-center mb-0 text-muted"><b id="Mname"></h3>
           <button type="button" class="close float-right" aria-label="Close" data-dismiss="modal">
             <span aria-hidden="true">&#xD7;</span>
           </button>
@@ -701,20 +720,23 @@
               <form id="uploadForm" enctype="multipart/form-data">
                 <input id="imgUpload" type="file" name="img">
               </form>
-              <img id="profileImg" src="/image/gray.png" alt="사진" class="img-circle img-fluid mb-3">
-              <h2 class="lead"><b id="Mname"></b></h2>
-              <button id="imgBtn" class="btn btn-info btn-sm" onclick="upload()">이미지 적용</button>
+              <div class="row justify-content-center">
+                <img id="profileImg" style="object-fit: cover" src="/image/gray.png" alt="사진" class="shadow-sm img-fluid mb-3">
+              </div>
+              <div class="row justify-content-center">
+                <button id="imgBtn" class="btn btn-info btn-sm float-right" onclick="upload()">이미지 저장</button>
+              </div>
             </div>
             <div class="col-7">
-              <p class="text-muted text-sm"><b>생년월일: </b><span id="Mbirth"></span></p>
-              <p class="text-muted text-sm"><span><i class="fas fa-lg fa-phone"></i></span><span id="Mphone"></span></p>
-              <p class="text-muted text-sm"><span><i class="fas fa-envelope"></i></span><span id="Memail"></span></p>
-              <p class="text-muted text-sm"><b>거주지: </b><span id="Mresidence"></span></p>
-              <p class="text-muted text-sm"><b>소속: </b><span id="Mbelong"></span></p>
-              <p class="text-muted text-sm"><b>전공: </b><span id="Mmajor"></span></p>
-              <p class="text-muted text-sm"><b>최종 학력: </b><span id="Mgraduate"></span></p>
-              <p class="text-muted text-sm"><b>수강시작일: </b><span id="Mstart"></span></p>
-              <p class="text-muted text-sm"><b>특이사항: </b><span id="Mnote"></span></p>
+              <p><b>생년월일 &nbsp;</b><span class="text-muted text-sm" id="Mbirth"></span></p>
+              <p><span><i class="fas fa-lg fa-phone"></i>&nbsp;</span><span class="text-muted text-sm" id="Mphone"></span></p>
+              <p><span><i class="fas fa-envelope"></i>&nbsp;</span><span class="text-muted text-sm" id="Memail"></span></p>
+              <p><b>거주지 &nbsp;</b><span class="text-muted text-sm" id="Mresidence"></span></p>
+              <p><b>소속 &nbsp;</b><span class="text-muted text-sm" id="Mbelong"></span></p>
+              <p><b>전공 &nbsp;</b><span class="text-muted text-sm" id="Mmajor"></span></p>
+              <p><b>최종 학력 &nbsp;</b><span class="text-muted text-sm" id="Mgraduate"></span></p>
+              <p><b>수강시작일 &nbsp;</b><span class="text-muted text-sm" id="Mstart"></span></p>
+              <p><b>특이사항 &nbsp;</b><span class="text-muted text-sm" id="Mnote"></span></p>
             </div>
           </div>
         </div>
