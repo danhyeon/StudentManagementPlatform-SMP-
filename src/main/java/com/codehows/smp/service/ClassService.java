@@ -54,4 +54,14 @@ public class ClassService {
         StudentImgDto studentImgDto = StudentImgDto.of(studentImg);
         return studentImgDto;
     }
+
+    public void updateSeats(SeatDto[] seatDtos) {
+        for(SeatDto s : seatDtos) {
+            if(s.getId()!=null) {
+                Student student = studentRepository.findById(s.getId())
+                        .orElseThrow(EntityExistsException::new);
+                student.setSeat(s.getSeat());
+            }
+        }
+    }
 }

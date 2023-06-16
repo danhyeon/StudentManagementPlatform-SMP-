@@ -36,6 +36,17 @@ public class ClassManageController {
         return "pages/classManage/classInfo";
     }
 
+    @GetMapping(value = "/info/{classab}")
+    public String getClassCard(@PathVariable("classab") String classAB) {
+        String returnPath = null;
+        if(classAB.equals("A")) {
+            returnPath = "pages/classManage/classACard";
+        }else if(classAB.equals("B")) {
+            returnPath = "pages/classManage/classBCard";
+        }
+        return returnPath;
+    }
+
     @ResponseBody
     @PostMapping(value = "/seats")
     public Map<String, Object> getSeats() {
@@ -96,5 +107,14 @@ public class ClassManageController {
         }
 
         return "pages/classManage/editCard";
+    }
+
+    @ResponseBody
+    @PatchMapping(value = "/update")
+    public ResponseEntity updateSeats(@RequestBody SeatDto[] seatDtos) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        classService.updateSeats(seatDtos);
+        map.put("result", "ok");
+        return new ResponseEntity<Object>(map, HttpStatus.OK);
     }
 }

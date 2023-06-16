@@ -17,6 +17,4 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     List<SeatDto> findSeatDtoList(String classAB);
 
     List<Student> findByClassAB(String classAB);
-
-
 }
