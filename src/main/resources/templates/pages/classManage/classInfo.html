@@ -19,66 +19,96 @@
 
   <!--  컴포넌트의 동작에 필요한 인라인 스크립트-->
   <script th:inline="javascript">
+    //document 로딩 시 실행
     $(function(){
+      //이미지 클릭시 파일 업로드 창 자동 클릭
       $("#profileImg").click(function(){
         $('#imgUpload').click();
       });
+      //파일이 변경되면 바로 미리보기 적용
       $('#imgUpload').change(function(event) {
         var file = event.target.files[0];
         if(!isImageFile(file)) {
           return;
         }
         var reader = new FileReader();
+        //미리보기 적용
         reader.onload = function(e) {
           $("#profileImg").attr("src", e.target.result);
         }
         reader.readAsDataURL(file);
+        //이미지 적용 버튼 보이기
         $('#imgBtn').css('display', 'block');
       });
+      //A,B반 자리 배치 Card 뿌리기
       getClassCard("A");
       getClassCard("B");
+      //클릭 이벤트나 다양한 컴포넌트에 걸리는 이벤트 초기화
       setInit();
     });
     function setInit() {
+      //이미지 클릭시 디테일 뷰 모달
       $(".background-wrap").on("click", function() {
+        //자리 그리드에 심어진 학생 아이디
         var id = $(this).children().children().data('sid');
+        //공석 클릭시 모달 x
         if(id != null) {
+          //모달은 하나만 쓰므로 초기화 - 디테일뷰에 들어가는 내용 공백으로
           initModal();
+          //해당 학생에 대한 정보로 채우기 - ajax
           infoModal(id);
+          //이름 태그에 가져온 id심기 + 이미지 폼 초기화
           $('#Mname').data("sid", id);
           $('#imgBtn').css('display', 'none');
           $('#imgUpload').val(null);
+          //모달 오픈
           $('#galleryModal').modal();
         }
       })
+      //A반 자리 배치 편집버튼 누르면 동작
       $('#editSeatsA').click(function(){
+        //편집 버튼을 저장 버튼으로 교체
         $('#editSeatsA').css('display', 'none');
         $('#saveSeatsA').css('display', 'block');
+        //A반 편집 카드가 등장할 것이므로 B반 카드 안보이게
         $('#bCard').css('display', 'none');
+        //A반 총 자리수
         const aSeatsSize = 32;
+        //A반 카드 내 각 자리 id속성
         let seatA = 'span#seatA-';
+        //각 자리를 번호로 매핑
         for(var i=1; i<=aSeatsSize; i++) {
           var seat = seatA + i;
-          $(seat).css("color", "gray");
-          $(seat).text(i);
+          if($(seat).text()=="공석") {
+            $(seat).css("color", "gray");
+            $(seat).text(i);
+          }
         }
+        //edit Board 열기
         showEdit("A");
       });
+      //A반 동작과 동일
       $('#editSeatsB').click(function(){
         $('#editSeatsB').css('display', 'none');
         $('#saveSeatsB').css('display', 'block');
         $('#aCard').css('display', 'none');
+        //B반 총 자리수
         const bSeatsSize = 18;
         let seatB = 'span#seatB-';
         for(var j=1; j<=bSeatsSize; j++) {
           var seat = seatB + j;
-          $(seat).css("color", "gray");
-          $(seat).text(j);
+          if($(seat).text()=="공석") {
+            $(seat).css("color", "gray");
+            $(seat).text(i);
+          }
         }
+        //edit Board 열기
         showEdit("B");
       });
+      //저장 버튼 클릭 시 동작
       $('#saveSeatsA').click(function() {
-        var studentSeats = [];
+        var studentSeats = []
+        //각 드롭다운 폼에 선택된 데이터를 SeatDto형식에 맞추어 리스트화
         $('.select2bs4 option:selected').each((index, item) => {
           studentSeats.push({
             "seatId" : index+1,
@@ -87,13 +117,18 @@
             "name" : item.text,
           });
         });
+        //리스트를 updateSeat함수에 전달
         updateSeat(studentSeats);
+        //Edit Board 닫기
         closeEdit();
+        //update ajax는 동기화된 동작 - 끝나면 A반 카드 다시 뿌리기
         getClassCard("A");
+        //edit board 닫고 B반 카드 다시 보이기
         $('#editSeatsA').css('display', 'block');
         $('#saveSeatsA').css('display', 'none');
         $('#bCard').css('display', 'block');
       });
+      //A반과 동작 동일
       $('#saveSeatsB').click(function() {
         var studentSeats = [];
         $('.select2bs4 option:selected').each((index, item) => {
@@ -112,17 +147,82 @@
         $('#aCard').css('display', 'block');
       });
     }
+    //모달 초기화 함수
+    function initModal() {
+      $('#Mname').text('');
+      $('#Mbirth').text('');
+      $('#Mphone').text('');
+      $('#Memail').text('');
+      $('#Mresidence').text('');
+      $('#Mbelong').text('');
+      $('#Mmajor').text('');
+      $('#Mgraduate').text('');
+      $('#Mstart').text('');
+      $('#Mnote').text('');
+    }
+    //학생 그리드 클릭시 해당 학생에 맞춘 정보로 다시 초기화
+    function infoModal(id) {
+      var url = "/class/detail/" + id;
+      $.ajax({
+        url: url,
+        type: "GET",
+        dataType : "json",
+        cache   : false,
+        success  : function(data){
+          var source = '/image/'+data.image;
+          $('#profileImg').attr('src', source);
+          $('#Mname').text(' ' + data.student.name);
+          $('#Mbirth').text(' ' + data.student.birth);
+          $('#Mphone').text('' + data.student.phone);
+          $('#Memail').text(' ' + data.student.email);
+          $('#Mresidence').text(' ' + data.student.residence);
+          $('#Mbelong').text(' ' + data.student.belong);
+          $('#Mmajor').text(' ' + data.student.major);
+          $('#Mgraduate').text(' ' + data.student.graduate);
+          $('#Mstart').text(' ' + data.student.start);
+          $('#Mnote').text(' ' + data.student.note);
+        },
+      });
+    }
+    //이미지 파일 서버로 전송
+    function upload() {
+      const imgUpload = $('#imgUpload')[0];
+      if(imgUpload.files.length === 0) {
+        alert("파일을 선택해주세요");
+        return;
+      }
+      const formData = new FormData();
+      formData.append("img", imgUpload.files[0]);
+      var id = $('#Mname').data("sid");
+      $.ajax({
+        type: 'POST',
+        url: '/class/profileImg/' + id,
+        enctype: 'multipart/form-data',
+        cache: false,
+        processData: false,
+        contentType: false,
+        data: formData,
+        success: function(result) {
+          var source = '/image/'+result.oriImgName;
+          $('#profileImg').attr('src', source);
+          $('#imgBtn').css('display', 'none');
+          toastInfo('success', '이미지가 적용되었습니다');
+        },
+      })
+    }
+    //선택된 seat데이터 서버로 전송
     function updateSeat(studentSeats) {
       $.ajax({
         contentType: 'application/json;charset=UTF-8',
         type: "PATCH",
+        //비동기 false - 동기화된 전송 - 해당 전송 및 처리가 끝나야 다음 동작 수행
         async: false,
         url: "/class/update",
         data: JSON.stringify(studentSeats),
         dataType: "json",
         cache   : false,
         success: function () {
-          getSeats();
+          setSeats(); // 처리가 완료되면 자리 다시 뿌리기
           toastInfo('success', '자리 배치가 변경되었습니다');
         },
         error : function(jqXHR){
@@ -135,6 +235,7 @@
         }
       });
     }
+    //각 반의 자리 배치 카드를 가져옴
     function getClassCard(classab) {
       var url = "/class/info/" + classab
       $.ajax({
@@ -151,7 +252,7 @@
             $('#bCard').children().remove();
             $('#bCard').append(data);
           }
-          getSeats();
+          setSeats();
           setInit();
         },
         error : function(jqXHR){
@@ -164,6 +265,7 @@
         }
       });
     }
+    //edit Board 보이기
     function showEdit(classab) {
       var url = "/class/edit/" + classab
       $.ajax({
@@ -174,7 +276,7 @@
         cache   : false,
         success  : function(data){
           $('#editCard').children().remove();
-          $('#editCard').append(data);
+          $('#editCard').append(data)
           $('#editCard').css('display', 'block');
           initselect2();
           $('#initBtn').click(function() {
@@ -191,24 +293,28 @@
         }
       });
     }
+    function closeEdit() {
+      $('#editCard').children().remove();
+      $('#editCard').css('display', 'none');
+    }
+    // 드롭다운 초기화
     function initselect2() {
       $('.select2bs4').select2({
         theme: 'bootstrap4',
       })
+      //자리 배치시 이미 선택된 옵션은 disable
       $('.select2bs4').change(function() {
         var selected = $(this).children("option:selected").val();
         $('.select2bs4').find("option[value='"+selected+"']").prop("disabled", true);
       });
     }
-    function closeEdit() {
-      $('#editCard').children().remove();
-      $('#editCard').css('display', 'none');
-    }
+    // 이미지파일인지 확인
     function isImageFile(file) {
       var ext = file.name.split(".").pop().toLowerCase(); // 파일명에서 확장자를 가져온다.
       return ($.inArray(ext, ["jpg", "jpeg", "gif", "png"]) === -1) ? false : true;
     }
-    function getSeats() {
+    //각 반 카드를 가져온 후 자리배치 정보를 가져와 세팅
+    function setSeats() {
       $.ajax({
         url: "/class/seats",
         type: "POST",
@@ -235,66 +341,6 @@
         }
       })
     };
-    function infoModal(id) {
-      var url = "/class/detail/" + id;
-      $.ajax({
-        url: url,
-        type: "GET",
-        dataType : "json",
-        cache   : false,
-        success  : function(data){
-          var source = '/image/'+data.image;
-          $('#profileImg').attr('src', source);
-          $('#Mname').text(' ' + data.student.name);
-          $('#Mbirth').text(' ' + data.student.birth);
-          $('#Mphone').text('' + data.student.phone);
-          $('#Memail').text(' ' + data.student.email);
-          $('#Mresidence').text(' ' + data.student.residence);
-          $('#Mbelong').text(' ' + data.student.belong);
-          $('#Mmajor').text(' ' + data.student.major);
-          $('#Mgraduate').text(' ' + data.student.graduate);
-          $('#Mstart').text(' ' + data.student.start);
-          $('#Mnote').text(' ' + data.student.note);
-        },
-      });
-    }
-    function initModal() {
-      $('#Mname').text('');
-      $('#Mbirth').text('');
-      $('#Mphone').text('');
-      $('#Memail').text('');
-      $('#Mresidence').text('');
-      $('#Mbelong').text('');
-      $('#Mmajor').text('');
-      $('#Mgraduate').text('');
-      $('#Mstart').text('');
-      $('#Mnote').text('');
-    }
-    function upload() {
-      const imgUpload = $('#imgUpload')[0];
-      if(imgUpload.files.length === 0) {
-        alert("파일을 선택해주세요");
-        return;
-      }
-      const formData = new FormData();
-      formData.append("img", imgUpload.files[0]);
-      var id = $('#Mname').data("sid");
-      $.ajax({
-        type: 'POST',
-        url: '/class/profileImg/' + id,
-        enctype: 'multipart/form-data',
-        cache: false,
-        processData: false,
-        contentType: false,
-        data: formData,
-        success: function(result) {
-          var source = '/image/'+result.oriImgName;
-          $('#profileImg').attr('src', source);
-          $('#imgBtn').css('display', 'none');
-          toastInfo('success', '이미지가 적용되었습니다');
-        },
-      })
-    }
     function toastInfo(icon, title) {
       Swal.mixin({
         toast: true,
