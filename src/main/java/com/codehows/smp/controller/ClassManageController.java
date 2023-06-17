@@ -51,8 +51,8 @@ public class ClassManageController {
     @PostMapping(value = "/seats")
     public Map<String, Object> getSeats() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("dataA", classService.getSeatsList("A반"));
-        result.put("dataB",classService.getSeatsList("B반"));
+        result.put("dataA", classService.getSeatsList("A"));
+        result.put("dataB",classService.getSeatsList("B"));
         return result;
     }
 
@@ -97,12 +97,11 @@ public class ClassManageController {
 
     @GetMapping(value = "/edit/{classab}")
     public String getEditCard(@PathVariable("classab") String classAB, Model model) {
-        classAB += "반";
         List<StudentDto> studentDtoList = studentService.getClassList(classAB);
         model.addAttribute("students", studentDtoList);
-        if(classAB.equals("A반")) {
+        if(classAB.equals("A")) {
             model.addAttribute("class", "A");
-        }else if(classAB.equals("B반")) {
+        }else if(classAB.equals("B")) {
             model.addAttribute("class", "B");
         }
 

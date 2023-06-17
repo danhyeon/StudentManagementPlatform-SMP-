@@ -10,11 +10,5 @@ import java.util.List;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
 
-    @Query("select new com.codehows.smp.dto.SeatDto(s.id, s.name, s.seat) " +
-            "from Student s " +
-            "where s.classAB = :classAB " +
-            "order by s.seat asc")
-    List<SeatDto> findSeatDtoList(String classAB);
-
     List<Student> findByClassAB(String classAB);
 }

@@ -1,5 +1,6 @@
 package com.codehows.smp.dto;
 
+import com.codehows.smp.entity.Seat;
 import com.codehows.smp.entity.Student;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,22 +14,24 @@ import org.modelmapper.ModelMapper;
 @ToString
 public class SeatDto {
 
-    private Long id;
+    private Long seatId;
+
+    private String classAB;
+
+    private Long studentId;
 
     private String name;
 
-    private Integer seat;
-
     private static ModelMapper modelMapper = new ModelMapper();
-
-    public static SeatDto of(Student student) {
-        return modelMapper.map(student, SeatDto.class);
+    public static SeatDto of(Seat seat) {
+        return modelMapper.map(seat, SeatDto.class);
     }
 
-    public SeatDto(Long id, String name, Integer seat) {
-        this.id = id;
+    public SeatDto(Long studentId, Long seatId, String classAB, String name) {
+        this.studentId = studentId;
+        this.seatId = seatId;
+        this.classAB = classAB;
         this.name = name;
-        this.seat = seat;
     }
 
 }

@@ -3,8 +3,11 @@ package com.codehows.smp.service;
 import com.codehows.smp.dto.SeatDto;
 import com.codehows.smp.dto.StudentDto;
 import com.codehows.smp.dto.StudentImgDto;
+import com.codehows.smp.entity.Seat;
+import com.codehows.smp.entity.SeatID;
 import com.codehows.smp.entity.Student;
 import com.codehows.smp.entity.StudentImg;
+import com.codehows.smp.repository.SeatRepository;
 import com.codehows.smp.repository.StudentImgRepository;
 import com.codehows.smp.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +27,10 @@ public class ClassService {
 
     private final StudentRepository studentRepository;
     private final StudentImgRepository studentImgRepository;
+    private final SeatRepository seatRepository;
 
     public List<SeatDto> getSeatsList(String classAB) {
-        List<SeatDto> seatDtos = studentRepository.findSeatDtoList(classAB);
+        List<SeatDto> seatDtos = seatRepository.findSeatDtoList(classAB);
         return seatDtos;
     }
 
@@ -57,10 +61,20 @@ public class ClassService {
 
     public void updateSeats(SeatDto[] seatDtos) {
         for(SeatDto s : seatDtos) {
-            if(s.getId()!=null) {
-                Student student = studentRepository.findById(s.getId())
+            if(s.getStudentId()!= null) {
+                Student student = studentRepository.findById(s.getStudentId())
                         .orElseThrow(EntityExistsException::new);
-                student.setSeat(s.getSeat());
+
+                if (seatRepository.findByStudentId(s.getStudentId()) != null) {
+                    Seat last = seatRepository.findByStudentId(s.getStudentId());
+                    seatRepository.delete(last);
+                }
+                if(seatRepository.findBySeatIdAndClassAB(s.getSeatId(), s.getClassAB())!=null) {
+                    Seat last = seatRepository.findBySeatIdAndClassAB(s.getSeatId(), s.getClassAB());
+                    seatRepository.delete(last);
+                }
+                Seat newSeat = Seat.createSeat(s, student);
+                seatRepository.save(newSeat);
             }
         }
     }
