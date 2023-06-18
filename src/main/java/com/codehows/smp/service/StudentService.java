@@ -2,6 +2,8 @@ package com.codehows.smp.service;
 
 import com.codehows.smp.dto.StudentDto;
 import com.codehows.smp.entity.Student;
+import com.codehows.smp.logEntity.LogStudent;
+import com.codehows.smp.logRepository.LogStudentRepository;
 import com.codehows.smp.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ import java.util.UUID;
 public class StudentService {
 
     private final StudentRepository studentRepository;
+    private final LogStudentRepository logStudentRepository;
 
     public void addStudent(StudentDto studentDto) {
         Student student = Student.createStudent(studentDto);
@@ -59,6 +62,8 @@ public class StudentService {
     public void deleteStudent(Long id) {
         Student student = studentRepository.findById(id)
                 .orElseThrow(EntityExistsException::new);
+        LogStudent logStudent = LogStudent.createLogStudent(StudentDto.of(student));
+        logStudentRepository.save(logStudent);
         studentRepository.delete(student);
     }
 

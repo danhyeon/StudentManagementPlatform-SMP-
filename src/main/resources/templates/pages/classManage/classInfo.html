@@ -72,38 +72,16 @@
         $('#saveSeatsA').css('display', 'block');
         //A반 편집 카드가 등장할 것이므로 B반 카드 안보이게
         $('#bCard').css('display', 'none');
-        //A반 총 자리수
-        const aSeatsSize = 32;
-        //A반 카드 내 각 자리 id속성
-        let seatA = 'span#seatA-';
-        //각 자리를 번호로 매핑
-        for(var i=1; i<=aSeatsSize; i++) {
-          var seat = seatA + i;
-          if($(seat).text()=="공석") {
-            $(seat).css("color", "gray");
-            $(seat).text(i);
-          }
-        }
         //edit Board 열기
-        showEdit("A");
+        showEdit(32, "A");
       });
       //A반 동작과 동일
       $('#editSeatsB').click(function(){
         $('#editSeatsB').css('display', 'none');
         $('#saveSeatsB').css('display', 'block');
         $('#aCard').css('display', 'none');
-        //B반 총 자리수
-        const bSeatsSize = 18;
-        let seatB = 'span#seatB-';
-        for(var j=1; j<=bSeatsSize; j++) {
-          var seat = seatB + j;
-          if($(seat).text()=="공석") {
-            $(seat).css("color", "gray");
-            $(seat).text(i);
-          }
-        }
         //edit Board 열기
-        showEdit("B");
+        showEdit(18, "B");
       });
       //저장 버튼 클릭 시 동작
       $('#saveSeatsA').click(function() {
@@ -146,6 +124,13 @@
         $('#saveSeatsB').css('display', 'none');
         $('#aCard').css('display', 'block');
       });
+    }
+    function initEdit(size, classab) {
+      let seatAB = 'span#seat'+classab+'-';
+      for(var j=1; j<=size; j++) {
+        var seat = seatAB + j;
+        $(seat).text(j);
+      }
     }
     //모달 초기화 함수
     function initModal() {
@@ -237,7 +222,7 @@
     }
     //각 반의 자리 배치 카드를 가져옴
     function getClassCard(classab) {
-      var url = "/class/info/" + classab
+      var url = "/class/info/" + classab;
       $.ajax({
         url: url,
         type: "GET",
@@ -266,8 +251,8 @@
       });
     }
     //edit Board 보이기
-    function showEdit(classab) {
-      var url = "/class/edit/" + classab
+    function showEdit(size, classab) {
+      var url = "/class/edit/" + classab;
       $.ajax({
         url: url,
         type: "GET",
@@ -276,11 +261,13 @@
         cache   : false,
         success  : function(data){
           $('#editCard').children().remove();
-          $('#editCard').append(data)
+          $('#editCard').append(data);
           $('#editCard').css('display', 'block');
-          initselect2();
+          initEdit(size, classab);
+          setSeats();
+          initselect2(classab);
           $('#initBtn').click(function() {
-            showEdit(classab);
+            showEdit(size, classab);
           });
         },
         error : function(jqXHR){
@@ -298,14 +285,19 @@
       $('#editCard').css('display', 'none');
     }
     // 드롭다운 초기화
-    function initselect2() {
+    function initselect2(classab) {
       $('.select2bs4').select2({
         theme: 'bootstrap4',
       })
+
       //자리 배치시 이미 선택된 옵션은 disable
       $('.select2bs4').change(function() {
         var selected = $(this).children("option:selected").val();
+        var select2Id = $(this).data('id');
         $('.select2bs4').find("option[value='"+selected+"']").prop("disabled", true);
+        var seat = 'span#seat' + classab + '-' + select2Id;
+        $(seat).text($(this).children("option:selected").text());
+        $(seat).css('color', 'gray');
       });
     }
     // 이미지파일인지 확인

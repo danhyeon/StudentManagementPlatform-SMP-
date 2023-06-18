@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Setter
 @Table(name="student_img")
 @NoArgsConstructor
-public class StudentImg {
+public class StudentImg extends BaseEntity {
 
     @Id
     @Column(name="student_img_id")

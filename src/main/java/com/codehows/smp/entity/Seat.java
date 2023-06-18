@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @IdClass(SeatID.class)
-public class Seat {
+public class Seat extends BaseEntity {
     @Id
     @Column(nullable = false)
     private Long seatId;

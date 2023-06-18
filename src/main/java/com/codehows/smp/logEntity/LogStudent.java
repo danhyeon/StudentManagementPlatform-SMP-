@@ -1,4 +1,4 @@
-package com.codehows.smp.entity;
+package com.codehows.smp.logEntity;
 
 import com.codehows.smp.dto.StudentDto;
 import lombok.*;
@@ -6,15 +6,15 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name="student")
+@Table(name="log_student")
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
-public class Student extends BaseEntity {
+public class LogStudent {
 
     @Id
-    @Column(name="student_id")
+    @Column(name="log_student_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
@@ -49,8 +49,8 @@ public class Student extends BaseEntity {
     @Column(length = 400)
     private String note;
 
-    public static Student createStudent(StudentDto studentDto) {
-        return Student.builder()
+    public static LogStudent createLogStudent(StudentDto studentDto) {
+        return LogStudent.builder()
                 .name(studentDto.getName())
                 .birth(studentDto.getBirth())
                 .phone(studentDto.getPhone())
@@ -67,7 +67,7 @@ public class Student extends BaseEntity {
     }
 
     @Builder
-    public Student(String name, String birth, String phone,
+    public LogStudent(String name, String birth, String phone,
                    String classAB, String residence, String belong,
                    String major, String graduate, String email,
                    LocalDate start, Boolean status, String note) {
@@ -83,20 +83,5 @@ public class Student extends BaseEntity {
         this.start = start;
         this.status = status;
         this.note = note;
-    }
-
-    public void updateStudent(StudentDto studentDto) {
-        this.name = studentDto.getName();
-        this.birth = studentDto.getBirth();
-        this.phone = studentDto.getPhone();
-        this.classAB = studentDto.getClassAB();
-        this.residence = studentDto.getResidence();
-        this.belong = studentDto.getBelong();
-        this.major = studentDto.getMajor();
-        this.graduate = studentDto.getGraduate();
-        this.email = studentDto.getEmail();
-        this.start = studentDto.getStart();
-        this.status = studentDto.getStatus();
-        this.note = studentDto.getNote();
     }
 }

@@ -1,10 +1,8 @@
 package com.codehows.smp.service;
 
 import com.codehows.smp.dto.SeatDto;
-import com.codehows.smp.dto.StudentDto;
 import com.codehows.smp.dto.StudentImgDto;
 import com.codehows.smp.entity.Seat;
-import com.codehows.smp.entity.SeatID;
 import com.codehows.smp.entity.Student;
 import com.codehows.smp.entity.StudentImg;
 import com.codehows.smp.repository.SeatRepository;
@@ -12,12 +10,9 @@ import com.codehows.smp.repository.StudentImgRepository;
 import com.codehows.smp.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 @Service
