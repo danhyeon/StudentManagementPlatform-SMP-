@@ -42,7 +42,7 @@ public class OAuthAttributes {
     }
 
     public Member toEntity() {
-        return com.codehows.smp.entity.Member.builder()
+        return Member.builder()
                 .name(name)
                 .email(email)
                 .role(Role.USER) // 기본 권한 User

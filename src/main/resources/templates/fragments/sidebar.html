@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko"
       xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" >
-
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4" th:fragment="sidebarFragment">
   <!-- Brand Logo -->
@@ -13,12 +13,11 @@
 
   <!-- Sidebar -->
   <div class="sidebar">
-    <!-- Sidebar member panel (optional) -->
-<!--    <div class="member-panel mt-3 pb-3 mb-3 d-flex">-->
-<!--      <div class="info">-->
-<!--        <span><a th:href="@{/}" >User Name</a>님 환영합니다.</span>-->
-<!--      </div>-->
-<!--    </div>-->
+<!--     Sidebar member panel (optional) -->
+    <div class="member-panel pb-3 d-flex">
+      <div class="info">
+      </div>
+    </div>
 
     <!-- SidebarSearch Form -->
     <div class="form-inline">
@@ -60,48 +59,48 @@
             </li>
           </ul>
         </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-network-wired"></i>
-            <p>
-              팀 관리
-              <i class="fas fa-angle-left right"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a th:href="@{/}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>팀 정보 관리</p>
-              </a>
-            </li>
-          </ul>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a th:href="@{/}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>팀 정보 조회</p>
-              </a>
-            </li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-book-open"></i>
-            <p>
-              도서 관리
-              <i class="fas fa-angle-left right"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a th:href="@{/}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>추가 예정</p>
-              </a>
-            </li>
-          </ul>
-        </li>
+<!--        <li class="nav-item">-->
+<!--          <a href="#" class="nav-link">-->
+<!--            <i class="nav-icon fas fa-network-wired"></i>-->
+<!--            <p>-->
+<!--              팀 관리-->
+<!--              <i class="fas fa-angle-left right"></i>-->
+<!--            </p>-->
+<!--          </a>-->
+<!--          <ul class="nav nav-treeview">-->
+<!--            <li class="nav-item">-->
+<!--              <a th:href="@{/}" class="nav-link">-->
+<!--                <i class="far fa-circle nav-icon"></i>-->
+<!--                <p>팀 정보 관리</p>-->
+<!--              </a>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--          <ul class="nav nav-treeview">-->
+<!--            <li class="nav-item">-->
+<!--              <a th:href="@{/}" class="nav-link">-->
+<!--                <i class="far fa-circle nav-icon"></i>-->
+<!--                <p>팀 정보 조회</p>-->
+<!--              </a>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--        </li>-->
+<!--        <li class="nav-item">-->
+<!--          <a href="#" class="nav-link">-->
+<!--            <i class="nav-icon fas fa-book-open"></i>-->
+<!--            <p>-->
+<!--              도서 관리-->
+<!--              <i class="fas fa-angle-left right"></i>-->
+<!--            </p>-->
+<!--          </a>-->
+<!--          <ul class="nav nav-treeview">-->
+<!--            <li class="nav-item">-->
+<!--              <a th:href="@{/}" class="nav-link">-->
+<!--                <i class="far fa-circle nav-icon"></i>-->
+<!--                <p>추가 예정</p>-->
+<!--              </a>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--        </li>-->
         <li class="nav-item">
           <a th:href="@{/}" class="nav-link">
             <i class="nav-icon far fa-calendar-alt"></i>

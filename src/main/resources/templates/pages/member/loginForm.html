@@ -39,6 +39,7 @@
                                 </div>
                             </div>
                         </div>
+                        <p th:if="${#strings.equals(error, true)}" th:text="${exception}" style="color: #bd2130;"></p>
                         <div class="row">
                             <div class="col-12">
                                 <button class="btn btn-primary btn-block">로그인</button>

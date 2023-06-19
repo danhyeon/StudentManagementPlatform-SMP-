@@ -3,6 +3,7 @@ package com.codehows.smp.config;
 import com.codehows.smp.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -51,7 +52,7 @@ public class SecurityConfig{
 
         http.authorizeRequests()
                 .mvcMatchers("/").hasAnyRole("USER", "ADMIN")
-                .mvcMatchers("/class/**", "/student/**").hasRole("ADMIN")
+                .mvcMatchers("/class/**", "/student/**", "/member/roles").hasRole("ADMIN")
                 .anyRequest().permitAll()
                 .and()
                 .oauth2Login()
