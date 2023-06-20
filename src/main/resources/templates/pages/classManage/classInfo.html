@@ -167,6 +167,17 @@
           $('#Mstart').text(' ' + data.student.start);
           $('#Mnote').text(' ' + data.student.note);
         },
+        error : function(jqXHR){
+          if(jqXHR.status == '401'){
+            alert('로그인 후 이용해주세요');
+            location.replace('/member/login');
+          } else if(jqXHR.status == '403'){
+            alert('해당 권한이 없습니다.');
+            location.replace('/');
+          } else {
+            alert(jqXHR.responseText);
+          }
+        }
       });
     }
     //이미지 파일 서버로 전송
@@ -193,6 +204,17 @@
           $('#imgBtn').css('display', 'none');
           toastInfo('success', '이미지가 적용되었습니다');
         },
+        error : function(jqXHR){
+          if(jqXHR.status == '401'){
+            alert('로그인 후 이용해주세요');
+            location.replace('/member/login');
+          } else if(jqXHR.status == '403'){
+            alert('해당 권한이 없습니다.');
+            location.replace('/');
+          } else {
+            alert(jqXHR.responseText);
+          }
+        }
       })
     }
     //선택된 seat데이터 서버로 전송
@@ -213,8 +235,11 @@
         error : function(jqXHR){
           if(jqXHR.status == '401'){
             alert('로그인 후 이용해주세요');
-            //location.href='/members/login';
-          } else{
+            location.replace('/member/login');
+          } else if(jqXHR.status == '403'){
+            alert('해당 권한이 없습니다.');
+            location.replace('/');
+          } else {
             alert(jqXHR.responseText);
           }
         }
@@ -243,8 +268,11 @@
         error : function(jqXHR){
           if(jqXHR.status == '401'){
             alert('로그인 후 이용해주세요');
-            //location.href='/members/login';
-          } else{
+            location.replace('/member/login');
+          } else if(jqXHR.status == '403'){
+            alert('해당 권한이 없습니다.');
+            location.replace('/');
+          } else {
             alert(jqXHR.responseText);
           }
         }
@@ -273,8 +301,11 @@
         error : function(jqXHR){
           if(jqXHR.status == '401'){
             alert('로그인 후 이용해주세요');
-            //location.href='/members/login';
-          } else{
+            location.replace('/member/login');
+          } else if(jqXHR.status == '403'){
+            alert('해당 권한이 없습니다.');
+            location.replace('/');
+          } else {
             alert(jqXHR.responseText);
           }
         }
@@ -330,6 +361,17 @@
             $(seat).css("color", "black");
             $(seat).data("sid", item.studentId);
           });
+        },
+        error : function(jqXHR){
+          if(jqXHR.status == '401'){
+            alert('로그인 후 이용해주세요');
+            location.replace('/member/login');
+          } else if(jqXHR.status == '403'){
+            alert('해당 권한이 없습니다.');
+            location.replace('/');
+          } else {
+            alert(jqXHR.responseText);
+          }
         }
       })
     };
