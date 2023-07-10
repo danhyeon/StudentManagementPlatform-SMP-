@@ -297,6 +297,30 @@
       });
     }
 
+    function getClassInfo(classAB) {
+      $.ajax({
+        url: "/student/filter/" + classAB,
+        type: "POST",
+        async: true,
+        dataType : "html",
+        cache   : false,
+        success  : function(data){
+          refreshBody(data);
+        },
+        error : function(jqXHR){
+          if(jqXHR.status == '401'){
+            alert('로그인 후 이용해주세요');
+            location.replace('/member/login');
+          } else if(jqXHR.status == '403'){
+            alert('해당 권한이 없습니다.');
+            location.replace('/');
+          } else {
+            alert(jqXHR.responseText);
+          }
+        }
+      });
+    }
+
   </script>
 </th:block>
 
@@ -342,6 +366,11 @@
               <!-- /.card-header -->
               <div class="card-body" id="refreshBody">
                 <div class="btn-group float-left">
+                  <button type="button" class="btn btn-default" onclick="getClassInfo('A')">A반</button>
+                  <button type="button" class="btn btn-default" onclick="getClassInfo('B')">B반</button>
+                  <button type="button" class="btn btn-default" onclick="refreshTable()">전체</button>
+                </div>
+                <div class="btn-group float-left pl-2">
                   <button type="button" id="updateToggle" class="btn btn-info">수정</button>
                   <button type="button" class="btn btn-info" onclick="insertModal()">추가</button>
                   <button type="button" id="deleteToggle" class="btn btn-info">삭제</button>

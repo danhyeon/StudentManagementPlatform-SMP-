@@ -1,6 +1,6 @@
 package com.codehows.smp.config;
 
-import com.codehows.smp.service.CustomOAuth2UserService;
+//import com.codehows.smp.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
@@ -29,7 +29,7 @@ import javax.sql.DataSource;
 @RequiredArgsConstructor
 public class SecurityConfig{
 
-    private final CustomOAuth2UserService customOAuth2UserService;
+//    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -54,12 +54,12 @@ public class SecurityConfig{
                 .mvcMatchers("/").hasAnyRole("USER", "ADMIN")
                 .mvcMatchers("/class/**", "/student/**", "/member/roles").hasRole("ADMIN")
                 .anyRequest().permitAll()
-                .and()
-                .oauth2Login()
-                .defaultSuccessUrl("/")
-                .userInfoEndpoint() // oauth2 로그인 성공 후 가져올 때의 설정들
-                // 소셜로그인 성공 시 후속 조치를 진행할 UserService 인터페이스 구현체 등록
-                .userService(customOAuth2UserService)
+//                .and()
+//                .oauth2Login()
+//                .defaultSuccessUrl("/")
+//                .userInfoEndpoint() // oauth2 로그인 성공 후 가져올 때의 설정들
+//                // 소셜로그인 성공 시 후속 조치를 진행할 UserService 인터페이스 구현체 등록
+//                .userService(customOAuth2UserService)
         ;
 
 //        http.exceptionHandling()

@@ -31,6 +31,12 @@ public class StudentManageController {
         return "pages/studentManage/studentInfo";
     }
 
+    @PostMapping(value = "/filter/{classAB}")
+    public String infoClassManage(Model model, @PathVariable("classAB") String classAB) {
+        model.addAttribute("studentDtoList", studentService.getClassList(classAB));
+        return "pages/studentManage/studentTableBody";
+    }
+
     @ResponseBody
     @PostMapping(value = "/info")
     public ResponseEntity addStudent(@RequestBody StudentDto studentDto) {

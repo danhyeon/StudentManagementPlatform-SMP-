@@ -74,14 +74,14 @@ public class ClassManageController {
     @ResponseBody
     @PostMapping(value = "/profileImg/{studentId}")
     public StudentImgDto addImg(@RequestParam("img") MultipartFile img, @PathVariable("studentId") Long studentId) throws IOException {
-        String os = System.getProperty("os.name").toLowerCase();
+//        String os = System.getProperty("os.name").toLowerCase();
         String imageRoot = "";
-        if(os.contains("win")) {
-            imageRoot = "c:/Home/Resource/assets/";
-        }
-        else if(os.contains("linux")) {
-            imageRoot = "/Home/Resource/assets/";
-        }
+//        if(os.contains("win")) {
+//            imageRoot = "c:/Home/Resource/assets/";
+//        }
+//        else if(os.contains("linux")) {
+            imageRoot = "/home/codehows";
+//        }
         UUID uuid = UUID.randomUUID();
         String imgFileName = uuid + "_" + img.getOriginalFilename();
         Path imgPath = Paths.get(imageRoot + imgFileName);
