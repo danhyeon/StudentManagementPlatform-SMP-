@@ -80,7 +80,7 @@ public class ClassManageController {
 //            imageRoot = "c:/Home/Resource/assets/";
 //        }
 //        else if(os.contains("linux")) {
-            imageRoot = "/home/codehows";
+            imageRoot = "/home/codehows/";
 //        }
         UUID uuid = UUID.randomUUID();
         String imgFileName = uuid + "_" + img.getOriginalFilename();

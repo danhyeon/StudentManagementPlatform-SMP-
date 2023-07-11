@@ -14,7 +14,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
             path = "C:/home/resource/assets";
         }
         else if(os.contains("linux")) {
-            path = "/home/codehows";
+            path = "home";
         }
         registry.addResourceHandler("/image/**").addResourceLocations("file:///"+ path +"/");
     }
