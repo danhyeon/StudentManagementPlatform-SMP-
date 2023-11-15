@@ -81,7 +81,7 @@
         $('#saveSeatsB').css('display', 'block');
         $('#aCard').css('display', 'none');
         //edit Board 열기
-        showEdit(18, "B");
+        showEdit(24, "B");
       });
       //저장 버튼 클릭 시 동작
       $('#saveSeatsA').click(function() {
@@ -128,8 +128,8 @@
     function initEdit(size, classab) {
       let seatAB = 'span#seat'+classab+'-';
       for(var j=1; j<=size; j++) {
-        var seat = seatAB + j;
-        $(seat).text(j);
+        var seats = seatAB + j;
+        $(seats).text(j);
       }
     }
     //모달 초기화 함수
@@ -154,7 +154,7 @@
         dataType : "json",
         cache   : false,
         success  : function(data){
-          var source = '/image/'+data.image;
+          var source = '/class/profileImg/'+id;
           $('#profileImg').attr('src', source);
           $('#Mname').text(' ' + data.student.name);
           $('#Mbirth').text(' ' + data.student.birth);
@@ -199,7 +199,7 @@
         contentType: false,
         data: formData,
         success: function(result) {
-          var source = '/image/'+result.oriImgName;
+          var source = '/class/profileImg/'+id;
           $('#profileImg').attr('src', source);
           $('#imgBtn').css('display', 'none');
           toastInfo('success', '이미지가 적용되었습니다');
@@ -326,9 +326,9 @@
         var selected = $(this).children("option:selected").val();
         var select2Id = $(this).data('id');
         $('.select2bs4').find("option[value='"+selected+"']").prop("disabled", true);
-        var seat = 'span#seat' + classab + '-' + select2Id;
-        $(seat).text($(this).children("option:selected").text());
-        $(seat).css('color', 'gray');
+        var seats = 'span#seats' + classab + '-' + select2Id;
+        $(seats).text($(this).children("option:selected").text());
+        $(seats).css('color', 'gray');
       });
     }
     // 이미지파일인지 확인
@@ -350,16 +350,16 @@
           var dataA = result.dataA;
           var dataB = result.dataB;
           $.each(dataA, function (index, item) {
-            var seat = seatA + item.seatId;
-            $(seat).text(item.name);
-            $(seat).css("color", "black");
-            $(seat).data("sid", item.studentId);
+            var seats = seatA + item.seatId;
+            $(seats).text(item.name);
+            $(seats).css("color", "black");
+            $(seats).data("sid", item.studentId);
           });
           $.each(dataB, function (index, item) {
-            var seat = seatB + item.seatId;
-            $(seat).text(item.name);
-            $(seat).css("color", "black");
-            $(seat).data("sid", item.studentId);
+            var seats = seatB + item.seatId;
+            $(seats).text(item.name);
+            $(seats).css("color", "black");
+            $(seats).data("sid", item.studentId);
           });
         },
         error : function(jqXHR){
@@ -408,10 +408,10 @@
       opacity: 0.5;
     }
     .background-wrap:hover {
-      background-image: url('/image/seatHover.png');
+      background-image: url('/dist/img/seatHover.png');
     }
     .background-wrap {
-      background-image: url('/image/seatDefault.png');
+      background-image: url('/dist/img/seatDefault.png');
       width: 100px;
       height: 100px;
       display: flex;
@@ -490,10 +490,10 @@
                 <input id="imgUpload" type="file" name="img">
               </form>
               <div class="row justify-content-center">
-                <img id="profileImg" style="object-fit: cover" src="/image/gray.png" alt="사진" class="shadow-sm img-fluid mb-3">
+                <img id="profileImg" style="object-fit: cover" src="/dist/img/gray.png" alt="사진" class="shadow-sm img-fluid mb-3">
               </div>
               <div class="row justify-content-center">
-                <button id="imgBtn" class="btn btn-info btn-sm float-right" onclick="upload()">이미지 저장</button>
+                <button id="imgBtn" class="btn btn-info btn-sm float-rRFight" onclick="upload()">이미지 저장</button>
               </div>
             </div>
             <div class="col-7">

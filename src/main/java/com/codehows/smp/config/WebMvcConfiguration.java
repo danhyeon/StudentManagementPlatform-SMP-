@@ -9,13 +9,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     private String path;
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        String os = System.getProperty("os.name").toLowerCase();
-        if(os.contains("win")) {
-            path = "C:/home/resource/assets";
-        }
-        else if(os.contains("linux")) {
-            path = "home";
-        }
-        registry.addResourceHandler("/image/**").addResourceLocations("file:///"+ path +"/");
+        path = "home";
+        registry.addResourceHandler("/codehowsSMP/resource/image/**").addResourceLocations("file:///"+ path +"/");
     }
 }

@@ -7,6 +7,10 @@ import com.codehows.smp.entity.Student;
 import com.codehows.smp.service.ClassService;
 import com.codehows.smp.service.StudentService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,6 +18,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,10 +32,14 @@ import java.util.UUID;
 @RequestMapping(value = "/class")
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class ClassManageController {
 
     private final ClassService classService;
     private final StudentService studentService;
+
+    @Value("${uploadPath}")
+    private String uploadPath;
 
     @GetMapping(value = "/info")
     public String infoManage() {
@@ -52,7 +62,7 @@ public class ClassManageController {
     public Map<String, Object> getSeats() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("dataA", classService.getSeatsList("A"));
-        result.put("dataB",classService.getSeatsList("B"));
+        result.put("dataB", classService.getSeatsList("B"));
         return result;
     }
 
@@ -72,25 +82,30 @@ public class ClassManageController {
     }
 
     @ResponseBody
+    @GetMapping(value = "/profileImg/{studentId}")
+    public ResponseEntity<?> profileImage(@PathVariable Long studentId) {
+        try{
+            return ResponseEntity.ok().body(classService.profileImage(studentId));
+        }catch (EntityNotFoundException e) {
+            return new ResponseEntity<>("해당 이미지를 찾을 수 없습니다.", HttpStatus.METHOD_NOT_ALLOWED);
+        }
+    }
+
+    @ResponseBody
     @PostMapping(value = "/profileImg/{studentId}")
     public StudentImgDto addImg(@RequestParam("img") MultipartFile img, @PathVariable("studentId") Long studentId) throws IOException {
-//        String os = System.getProperty("os.name").toLowerCase();
-        String imageRoot = "";
-//        if(os.contains("win")) {
-//            imageRoot = "c:/Home/Resource/assets/";
-//        }
-//        else if(os.contains("linux")) {
-            imageRoot = "/home/codehows/";
-//        }
         UUID uuid = UUID.randomUUID();
-        String imgFileName = uuid + "_" + img.getOriginalFilename();
-        Path imgPath = Paths.get(imageRoot + imgFileName);
-        try{
-            Files.write(imgPath, img.getBytes());
-        } catch (Exception e) {
-            e.printStackTrace();
+        File destDir = new File(uploadPath);
+        if(!destDir.exists()) {
+            if(!destDir.mkdirs()) {
+                log.info("이미지 저장 디렉터리 생성 실패");
+                throw new RuntimeException();
+            }
         }
-        StudentImgDto studentImgDto = new StudentImgDto(imgFileName, imageRoot);
+        String imgFileName = uuid + "_" + img.getOriginalFilename();
+        Path imgPath = Paths.get(uploadPath + File.separator +imgFileName);
+        img.transferTo(imgPath);
+        StudentImgDto studentImgDto = new StudentImgDto(imgFileName, uploadPath);
         classService.addProfileImg(studentImgDto, studentId);
         return studentImgDto;
     }
@@ -116,4 +131,5 @@ public class ClassManageController {
         map.put("result", "ok");
         return new ResponseEntity<Object>(map, HttpStatus.OK);
     }
+
 }

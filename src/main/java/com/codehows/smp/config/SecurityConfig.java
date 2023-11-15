@@ -30,6 +30,9 @@ import javax.sql.DataSource;
 public class SecurityConfig{
 
 //    private final CustomOAuth2UserService customOAuth2UserService;
+    private AjaxAwareAuthenticationEntryPoint ajaxAwareAuthenticationEntryPoint(String url) {
+        return new AjaxAwareAuthenticationEntryPoint(url);
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -48,6 +51,9 @@ public class SecurityConfig{
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .logoutSuccessUrl("/member/login")
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(ajaxAwareAuthenticationEntryPoint("/member/login"))
         ;
 
         http.authorizeRequests()

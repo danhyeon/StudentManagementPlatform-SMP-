@@ -5,11 +5,12 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name="seat")
+@Table(name="seats")
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(SeatID.class)
-public class Seat extends BaseEntity {
+@IdClass(SeatUid.class)
+@ToString
+public class Seats extends BaseEntity {
     @Id
     @Column(nullable = false)
     private Long seatId;
@@ -25,8 +26,8 @@ public class Seat extends BaseEntity {
 
     private String name;
 
-    public static Seat createSeat(SeatDto seatDto, Student student) {
-        return Seat.builder()
+    public static Seats createSeat(SeatDto seatDto, Student student) {
+        return Seats.builder()
                 .seatId(seatDto.getSeatId())
                 .classAB(seatDto.getClassAB())
                 .student(student)
@@ -35,7 +36,7 @@ public class Seat extends BaseEntity {
     }
 
     @Builder
-    public Seat(Long seatId, String classAB, String name, Student student) {
+    public Seats(Long seatId, String classAB, String name, Student student) {
         this.seatId = seatId;
         this.name = name;
         this.classAB = classAB;
